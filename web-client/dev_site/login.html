@@ -6,5 +6,21 @@
     </head>
     <body>
         <p> Hi. This is the login page. </p>
+        <div>
+            <label for="Username">User Name:</label>
+            <input type="text" id="Username" name="Username"><br><br>
+            <label for="Password">Password:</label>
+            <input type="password" id="Password" name="Password" minlength="8" required><br><br>
+            <input type="button" value="Log In" onclick="onUserLogin()">
+            <a href="password_reset.html">Forgot Password</a>
+        </div>
+
+        <script src="../backend/user_services.js"></script>
+        <script>
+            function onUserLogin() {
+                alert("User tried to login");
+            }
+        </script>
+
     </body>
 </html>

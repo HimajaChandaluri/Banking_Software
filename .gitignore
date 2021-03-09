@@ -35,5 +35,5 @@
 .vscode
 
 # cmake artefacts
-build/*
+server/backend/build/*
 dependencies/build/*
