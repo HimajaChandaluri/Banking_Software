@@ -17,6 +17,7 @@
 
         <script src="../backend/user_services.js"></script>
         <script src="../backend/redirect.js"></script>
+        <script src="../backend/devutils.js"></script>
         <script>
             function onUserLogin() {
                 // alert("User tried to login");
@@ -29,19 +30,40 @@
             }
         </script>
         <script>
-            // Test retrieving args passed from loader page
-            var args = get_args_from_url();
-            var tag = document.createElement("p");
-            var serverInfoStr = "Server address: " + args[0];
-            serverInfoStr += "\n";
-            serverInfoStr += "Server port: " + args[1];
-            var serverAddr = document.createTextNode("Hostname=" + args[0]);
-            tag.appendChild(serverAddr);
-            tag.appendChild(document.createElement("br"));
-            var serverPort = document.createTextNode("Port=" + args[1]);
-            tag.appendChild(serverPort);
-            var element = document.getElementById("ui");
-            element.appendChild(tag);
+            // Test if user is already logged in
+            if(get_current_user() === ""){
+                // Test retrieving args passed from loader page
+                var args = get_args_from_url();
+                console.log(args);
+                if (args === undefined || args.length == 0 || args[0] === "") {
+                    var cachedInfo = check_cached_server_info();
+                    console.log(cachedInfo);
+                    if(cachedInfo["hostname"] === "" || cachedInfo["port"] === "") {
+                        // Don't know where server is. Redirect to laoder page.
+                        alert("No server info. Please set server location.");
+                        redirect_to_site("../loader-test.html");
+                    }
+                    // Use previously cached server info
+                    args[0] = cachedInfo["hostname"];
+                    args[1] = cachedInfo["port"];
+                }
+                var tag = document.createElement("p");
+                var serverInfoStr = "Server address: " + args[0];
+                serverInfoStr += "\n";
+                serverInfoStr += "Server port: " + args[1];
+                var serverAddr = document.createTextNode("Hostname=" + args[0]);
+                tag.appendChild(serverAddr);
+                tag.appendChild(document.createElement("br"));
+                var serverPort = document.createTextNode("Port=" + args[1]);
+                tag.appendChild(serverPort);
+                var element = document.getElementById("ui");
+                element.appendChild(tag);
+                // Cache server info for later use
+                document.cookie = "hostname=" + args[0];
+                document.cookie = "port=" + args[1];
+            } else {
+                redirect_to_site("home.html");
+            }
         </script>
     </body>
 </html>
