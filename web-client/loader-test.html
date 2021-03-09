@@ -5,7 +5,23 @@
         <title>Web-Client Redirection Test</title>
     </head>
     <body>
+        <p> Hi. This is the dev web-client launcher. </p>
+        <div>
+            <label for="hostname">Server Address:</label>
+            <input type="text" id="hostname" name="hostname", value="localhost"><br><br>
+            <label for="port">Port:</label>
+            <input type="text" id="port" name="port", value="8080"><br><br>
+            <input type="button" value="Connect" onclick="onConnect()">
+        </div>
         <script src="backend/redirect.js"></script>
-        <script> redirect_to_site("dev_site/login.html"); </script>
+        <script>
+            function onConnect() {
+                // Pass hostname and port to website
+                var hostaddr = document.getElementById("hostname").value;
+                var portnum = document.getElementById("port").value
+                var urlAndServerInfo = "dev_site/login.html?" + hostaddr + "|" + portnum;
+                redirect_to_site(urlAndServerInfo);
+            }
+        </script>
     </body>
 </html>

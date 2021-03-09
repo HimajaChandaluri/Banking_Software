@@ -1,6 +1,7 @@
 # List of src files for the build
 set(SERVER_SRC
 "main.cpp"
+"server.cpp"
 )
 
 set(SERVER bank_server)

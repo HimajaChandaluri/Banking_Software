@@ -6,11 +6,28 @@
     </head>
     <body>
         <p> Hi. This is the HOME page. </p>
+        <div>
+            <p id="userid">Placeholder</p>
+            <a href="javascript:void(0);", onclick="onSignOut();">Sign Out</a>
+        </div>
 
         <script src="../backend/redirect.js"></script>
+        <script src="../backend/user_services.js"></script>
         <script>
-            // This will happen whenever the page is loaded without an active session
-            redirect_to_site("login.html");
+            // Check if user is logged in. If not, redirect to login page.
+            var username = get_current_user();
+            if(username===""){
+                redirect_to_site("login.html");
+            }else{
+                var userNameElem = document.getElementById("userid");
+                userNameElem.innerHTML = "Signed in as " + username;
+            }
+        </script>
+        <script>
+            function onSignOut(){
+                user_sign_out();
+                redirect_to_site("login.html");
+            }
         </script>
     </body>
 </html>
