@@ -2,7 +2,6 @@
 set(SERVER_SRC
 "main.cpp"
 "server.cpp"
-"log.cpp"
 )
 
 set(SERVER bank_server)
@@ -11,13 +10,16 @@ add_executable(${SERVER} ${SERVER_SRC})
 
 # Include additional directories, when required
 target_include_directories(${SERVER} PUBLIC ${OSSDIR}/json11/)
+target_include_directories(${SERVER} PUBLIC ../liblog/)
 
 # Link libraries when required
 target_link_libraries(${SERVER} pthread)
 target_link_libraries(${SERVER} json11)
+target_link_libraries(${SERVER} liblog)
 
 # Add dependency if dependencies also need to be built
 add_dependencies(${SERVER} json11)
+add_dependencies(${SERVER} liblog)
 
 # Add post build events, if required
 # add_custom_command(TARGET ${SERVER} POST_BUILD

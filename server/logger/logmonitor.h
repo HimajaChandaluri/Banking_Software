@@ -24,6 +24,7 @@ namespace cmpe202
         int64_t m_flushFrequency_s;
         std::string m_timeFormat;
         std::string m_inBuffer;
+        uint32_t m_maxFileSize;
 
         void initSettings(const json11::Json &settings);
         int startServer();

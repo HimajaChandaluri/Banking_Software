@@ -41,7 +41,7 @@ cmpe202::LogMonitor::LogMonitor()
     {
         printf("Generating default settings\n");
         // Load default config
-        configStr = R"({"port":8081, "outdir":"~/.bankserver/logs/", "flush":10, "timeformat":"%a %b %d %H:%M:%S %Y"})";
+        configStr = R"({"port":8081, "outdir":"~/.bankserver/logs/", "flush":10, "timeformat":"%a %b %d %H:%M:%S %Y", "maxfilesize":10000})";
         dumpConfig = true;
     }
     std::string err;
@@ -158,11 +158,13 @@ void cmpe202::LogMonitor::initSettings(const json11::Json &settings)
     }
     m_flushFrequency_s = settings["flush"].int_value();
     m_timeFormat = settings["timeformat"].string_value();
+    m_maxFileSize = static_cast<uint32_t>(settings["maxfilesize"].int_value());
 
     printf("port: %u\n", m_port);
     printf("log dir: %s\n", m_logDir.c_str());
     printf("flush frequency: %lds\n", m_flushFrequency_s);
     printf("format time as: %s\n", m_timeFormat.c_str());
+    printf("max file size: %ubytes\n", m_maxFileSize);
 }
 
 int cmpe202::LogMonitor::startServer()

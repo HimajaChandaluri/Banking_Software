@@ -1,6 +1,0 @@
-{
-    "port": 8081,
-    "outdir": "~/.bankserver/logs/",
-    "flush": 10,
-    "timeformat": "%a %b %d %H:%M:%S %Y"
-}

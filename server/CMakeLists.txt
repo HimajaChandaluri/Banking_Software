@@ -4,6 +4,7 @@ project (bank_server)
 add_subdirectory(backend)
 add_subdirectory(logger)
 add_subdirectory(task_scheduler)
+add_subdirectory(liblog)
 add_subdirectory(oss)
 
 set(OSSDIR "oss")
