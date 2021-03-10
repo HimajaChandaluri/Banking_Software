@@ -1,21 +1,21 @@
 # List of src files for the build
-set(SERVER_SRC
+set(LOGGER_SRC
 "main.cpp"
-"server.cpp"
+"logmonitor.cpp"
 )
 
-set(SERVER bank_server)
+set(LOGGER logger)
 
-add_executable(${SERVER} ${SERVER_SRC})
+add_executable(${LOGGER} ${LOGGER_SRC})
 
 # Include additional directories, when required
-# target_include_directories(${SERVER} PUBLIC ${PROJECT_SOURCE_DIR}/dependencies/)
+target_include_directories(${LOGGER} PUBLIC ${OSSDIR}/json11/)
 
 # Link libraries when required
-target_link_libraries(${SERVER} pthread)
+target_link_libraries(${LOGGER} json11)
 
 # Add dependency if dependencies also need to be built
-#add_dependencies(${SERVER} ${SOME_DEPENDENCY})
+add_dependencies(${LOGGER} json11)
 
 # Add post build events, if required
 # add_custom_command(TARGET ${SERVER} POST_BUILD

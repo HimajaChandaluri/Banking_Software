@@ -1,23 +1,20 @@
 # List of src files for the build
-set(SERVER_SRC
+set(SCHEDULER_SRC
 "main.cpp"
-"server.cpp"
-"log.cpp"
 )
 
-set(SERVER bank_server)
+set(SCHEDULER task-scheduler)
 
-add_executable(${SERVER} ${SERVER_SRC})
+add_executable(${SCHEDULER} ${SCHEDULER_SRC})
 
 # Include additional directories, when required
-target_include_directories(${SERVER} PUBLIC ${OSSDIR}/json11/)
+# target_include_directories(${SERVER} PUBLIC ${PROJECT_SOURCE_DIR}/dependencies/)
 
 # Link libraries when required
-target_link_libraries(${SERVER} pthread)
-target_link_libraries(${SERVER} json11)
+# target_link_libraries(${SERVER} pthread)
 
 # Add dependency if dependencies also need to be built
-add_dependencies(${SERVER} json11)
+#add_dependencies(${SERVER} ${SOME_DEPENDENCY})
 
 # Add post build events, if required
 # add_custom_command(TARGET ${SERVER} POST_BUILD
