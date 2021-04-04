@@ -3,24 +3,6 @@ import "../../styles/sidebar.css";
 import { NavLink } from "react-router-dom";
 
 class ListItemSideBar extends Component {
-  renderClasses = (label, active) => {
-    let defaultClasses = "sidebar-nav-item";
-
-    if (label === "Contact Us") {
-      defaultClasses += " bottom-sidebar-nav-item";
-    }
-    return defaultClasses;
-  };
-
-  renderActiveOrInactiveNavLinkClass = (active) => {
-    let defaultClasses = "nav-link";
-
-    if (active === "true") {
-      defaultClasses += " active";
-    }
-    return defaultClasses;
-  };
-
   render() {
     let { iconClass, label, path, active = "false" } = this.props;
 
@@ -43,6 +25,24 @@ class ListItemSideBar extends Component {
       </li>
     );
   }
+
+  renderClasses = (label) => {
+    let defaultClasses = "sidebar-nav-item";
+
+    if (label === "Contact Us") {
+      defaultClasses += " bottom-sidebar-nav-item";
+    }
+    return defaultClasses;
+  };
+
+  renderActiveOrInactiveNavLinkClass = (active) => {
+    let defaultClasses = "nav-link";
+
+    if (active === "true") {
+      defaultClasses += " active";
+    }
+    return defaultClasses;
+  };
 }
 
 export default ListItemSideBar;

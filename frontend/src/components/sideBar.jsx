@@ -15,23 +15,23 @@ const SideBar = () => {
           {loggedIn && user && admin && (
             <React.Fragment>
               <ListItemSideBar
-                iconClass="fa fa-user-circle-o"
+                iconClass="fa fa-credit-card"
                 label="Create Account"
                 active="true"
                 path="./createAccount"
               ></ListItemSideBar>
               <ListItemSideBar
-                iconClass="fa fa-user-circle-o"
+                iconClass="fa fa-credit-card"
                 label="CloseAccount"
                 path="./closeAccount"
               ></ListItemSideBar>
               <ListItemSideBar
-                iconClass="fa fa-user-circle-o"
+                iconClass="fa fa-exchange"
                 label="Manual Transfer"
                 path="/manualTransfer"
               ></ListItemSideBar>
               <ListItemSideBar
-                iconClass="fa fa-user-circle-o"
+                iconClass="fa fa-cog"
                 label="Settings"
                 path="/adminSettings"
               ></ListItemSideBar>
@@ -40,29 +40,29 @@ const SideBar = () => {
           {loggedIn && user && !admin && (
             <React.Fragment>
               <ListItemSideBar
-                iconClass="fa fa-user-circle-o"
+                iconClass="fa fa-credit-card"
                 label="Accounts"
                 path="/accounts"
               ></ListItemSideBar>
               <ListItemSideBar
-                iconClass="fa fa-user-circle-o"
+                iconClass="fa fa-list-ul"
                 label="Transactions"
                 path="/transactions"
               ></ListItemSideBar>
               <ListItemSideBar
-                iconClass="fa fa-user-circle-o"
+                iconClass="fa fa-exchange"
                 label="Transfers"
                 path="/transfer"
               ></ListItemSideBar>
               <ListItemSideBar
-                iconClass="fa fa-user-circle-o"
+                iconClass="fa fa-cog"
                 label="Settings "
                 path="/userSettings"
               ></ListItemSideBar>
             </React.Fragment>
           )}
           <ListItemSideBar
-            iconClass="fa fa-user-circle-o"
+            iconClass="fa fa-mobile"
             label="Contact Us"
             path="/home"
           ></ListItemSideBar>
