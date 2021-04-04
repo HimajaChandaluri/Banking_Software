@@ -1,63 +1,44 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { loggedIn, user, admin } from "../services/authService";
+import ListItemNavBar from "./common/ListItemNavBar";
+import "../styles/navbar.css";
 
-const NavBar = ({ user }) => {
+const NavBar = () => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon"></span>
-      </button>
+    <nav
+      className="navbar navbar-dark fixed-top flex-md-nowrap p-10 shadow navbar-expand-md"
+      style={{ backgroundColor: "#6930c3" }}
+    >
+      <Link className="navbar-brand col-sm-3 col-md-2 mr-0" to="/">
+        Company name
+      </Link>
       <div className="collapse navbar-collapse" id="navbarNav">
-        <ul className="navbar-nav">
-          <li className="nav-item active">
-            <NavLink className="nav-link" to="/movies">
-              Movies
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/customers">
-              Customers
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/rentals">
-              Rentals
-            </NavLink>
-          </li>
+        <ul className="navbar-nav px-3 ml-auto">
           {!user && (
-            <React.Fragment>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/login">
-                  Login
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/register">
-                  Register
-                </NavLink>
-              </li>{" "}
-            </React.Fragment>
+            <ListItemNavBar
+              iconClass="fa fa-sign-out"
+              label="Login"
+              path="/login"
+            ></ListItemNavBar>
+            // <li className="nav-item text-nowrap">
+            //   <a className="nav-link" href="#">
+            //     Login
+            //   </a>
+            // </li>
           )}
           {user && (
             <React.Fragment>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/profile">
-                  {user.name}
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/logout">
-                  Logout
-                </NavLink>
-              </li>{" "}
+              <ListItemNavBar
+                iconClass="fa fa-user-circle-o"
+                label="Profile"
+                path="/"
+              ></ListItemNavBar>
+              <ListItemNavBar
+                iconClass="fa fa-sign-out"
+                label="Sign Out"
+                path="/"
+              ></ListItemNavBar>
             </React.Fragment>
           )}
         </ul>

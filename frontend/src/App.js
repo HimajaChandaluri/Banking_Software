@@ -13,10 +13,12 @@ import AdminSettings from "./components/adminSettings";
 import Transfer from "./components/transfer";
 import UserSettings from "./components/userSettings";
 import NewTransfer from "./components/newTransfer";
+import SideBar from "./components/sideBar";
 
 import Login from "./components/Login";
 
 import "./App.css";
+import NavBar from "./components/navBar";
 
 class App extends Component {
   state = {};
@@ -24,32 +26,49 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <Switch>
-          <Route path="/home" component={Home}></Route>
-          <UserRoute path="/accounts" component={UserAccount}></UserRoute>
-          <UserRoute
-            path="/transactions"
-            component={UserTransactions}
-          ></UserRoute>
-          <UserRoute path="/transfer" component={Transfer}></UserRoute>
-          <UserRoute path="/newTransfer" component={NewTransfer}></UserRoute>
-          <UserRoute path="/settings" component={UserSettings}></UserRoute>
-          <AdminRoute
-            path="/createAccount"
-            component={CreateAccount}
-          ></AdminRoute>
-          <AdminRoute
-            path="/closeAccount"
-            component={CloseAccount}
-          ></AdminRoute>
-          <AdminRoute
-            path="/manualTransfer"
-            component={ManualTransfer}
-          ></AdminRoute>
-          <AdminRoute path="/settings" component={AdminSettings}></AdminRoute>
-          <Route path="/login" component={Login}></Route>
-          <Redirect from="/" exact to="/home"></Redirect>
-        </Switch>
+        <NavBar></NavBar>
+        <div className="container-fluid">
+          <div className="row">
+            <SideBar></SideBar>
+            <main role="main" className="col-md-8 ml-sm-auto col-lg-10 px-4">
+              <Switch>
+                <Route path="/home" component={Home}></Route>
+                <UserRoute path="/accounts" component={UserAccount}></UserRoute>
+                <UserRoute
+                  path="/transactions"
+                  component={UserTransactions}
+                ></UserRoute>
+                <UserRoute path="/transfer" component={Transfer}></UserRoute>
+                <UserRoute
+                  path="/newTransfer"
+                  component={NewTransfer}
+                ></UserRoute>
+                <UserRoute
+                  path="/userSettings"
+                  component={UserSettings}
+                ></UserRoute>
+                <AdminRoute
+                  path="/createAccount"
+                  component={CreateAccount}
+                ></AdminRoute>
+                <AdminRoute
+                  path="/closeAccount"
+                  component={CloseAccount}
+                ></AdminRoute>
+                <AdminRoute
+                  path="/manualTransfer"
+                  component={ManualTransfer}
+                ></AdminRoute>
+                <AdminRoute
+                  path="/adminSettings"
+                  component={AdminSettings}
+                ></AdminRoute>
+                <Route path="/login" component={Login}></Route>
+                <Redirect from="/" exact to="/home"></Redirect>
+              </Switch>
+            </main>
+          </div>
+        </div>
       </React.Fragment>
     );
   }
