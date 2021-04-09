@@ -29,7 +29,7 @@ export function getCurrentUser() {
     return null;
   }
 
-  // tested using below values
+  // -----tested using below values------
   // return null;
   // return {
   //   _id: "1234",
