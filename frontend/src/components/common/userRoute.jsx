@@ -1,16 +1,24 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { loggedIn, user, admin } from "../../services/authService";
+import auth from "../../services/authService";
 
 const UserRoute = ({ path, component: Component, render, ...rest }) => {
+  const user = auth.getCurrentUser();
+  console.log("Got user data again in ADMIN ROUTE: ", user);
   return (
     <Route
       path={path}
       {...rest}
       render={(props) => {
-        if (loggedIn && user && !admin)
-          return Component ? <Component {...props}></Component> : render(props);
-        else if (admin) return <h1>Forbidden</h1>;
+        if (user) {
+          if (!user.isAdmin)
+            return Component ? (
+              <Component {...props}></Component>
+            ) : (
+              render(props)
+            );
+          else if (user.isAdmin) return <h1>Forbidden</h1>;
+        }
         return (
           <Redirect
             to={{

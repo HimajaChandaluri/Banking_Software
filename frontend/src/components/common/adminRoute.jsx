@@ -1,14 +1,16 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { loggedIn, user, admin } from "../../services/authService";
+import auth from "../../services/authService";
 
 const AdminRoute = ({ path, component: Component, render, ...rest }) => {
+  const user = auth.getCurrentUser();
+  console.log("Got user data again in ADMIN ROUTE: ", user);
   return (
     <Route
       path={path}
       {...rest}
       render={(props) => {
-        if (loggedIn && user && admin)
+        if (user && user.isAdmin)
           return Component ? <Component {...props}></Component> : render(props);
         return (
           <Redirect

@@ -1,9 +1,12 @@
 import React from "react";
-import { loggedIn, user, admin } from "../services/authService";
+import auth from "../services/authService";
 import ListItemSideBar from "./common/ListItemSideBar";
 // import "../styles/sidebar.css";
 
 const SideBar = () => {
+  const user = auth.getCurrentUser();
+  console.log("Got user data again in ADMIN ROUTE: ", user);
+
   return (
     <nav className="col-md-2 d-none d-md-block bg-light sidebar">
       <div className="sidebar-sticky">
@@ -12,7 +15,7 @@ const SideBar = () => {
             <img src="../images/logo.png" alt="LOGO"></img>
           </li>
 
-          {loggedIn && user && admin && (
+          {user && user.isAdmin && (
             <React.Fragment>
               <ListItemSideBar
                 iconClass="fa fa-credit-card"
@@ -37,7 +40,7 @@ const SideBar = () => {
               ></ListItemSideBar>
             </React.Fragment>
           )}
-          {loggedIn && user && !admin && (
+          {user && !user.isAdmin && (
             <React.Fragment>
               <ListItemSideBar
                 iconClass="fa fa-credit-card"

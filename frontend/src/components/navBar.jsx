@@ -1,10 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { loggedIn, user, admin } from "../services/authService";
+import auth from "../services/authService";
 import ListItemNavBar from "./common/ListItemNavBar";
 import "../styles/navbar.css";
 
 const NavBar = () => {
+  const user = auth.getCurrentUser();
+  console.log("Got user data again in ADMIN ROUTE: ", user);
+
   return (
     <nav
       className="navbar navbar-dark fixed-top flex-md-nowrap p-10 shadow navbar-expand-md"
