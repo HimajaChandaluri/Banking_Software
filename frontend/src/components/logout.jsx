@@ -10,19 +10,11 @@ class Logout extends Component {
       auth.logout();
       window.location = "/";
     } else {
-      if (user && user.isAdmin) {
-        <Redirect
-          to={{
-            pathname: "/createAccount",
-          }}
-        ></Redirect>;
-      } else {
-        <Redirect
-          to={{
-            pathname: "/accounts",
-          }}
-        ></Redirect>;
-      }
+      <Redirect
+        to={{
+          pathname: "/home",
+        }}
+      ></Redirect>;
     }
   }
 
