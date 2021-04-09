@@ -14,11 +14,11 @@ import Transfer from "./components/transfer";
 import UserSettings from "./components/userSettings";
 import NewTransfer from "./components/newTransfer";
 import SideBar from "./components/sideBar";
-
+import NavBar from "./components/navBar";
+import Logout from "./components/logout";
 import Login from "./components/Login";
 
 import "./App.css";
-import NavBar from "./components/navBar";
 
 class App extends Component {
   state = {};
@@ -64,6 +64,7 @@ class App extends Component {
                   component={AdminSettings}
                 ></AdminRoute>
                 <Route path="/login" component={Login}></Route>
+                <Route path="/logout" component={Logout}></Route>
                 <Redirect from="/" exact to="/home"></Redirect>
               </Switch>
             </main>

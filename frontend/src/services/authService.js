@@ -35,7 +35,7 @@ export function getCurrentUser() {
   //   _id: "1234",
   //   name: "Himaja Chandaluri",
   //   email: "himaja.chandaluri@gmail.com",
-  //   isAdmin: true,
+  //   isAdmin: false,
   //   iat: 1617904344,
   // };
 }

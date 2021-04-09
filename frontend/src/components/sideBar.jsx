@@ -21,12 +21,12 @@ const SideBar = () => {
                 iconClass="fa fa-credit-card"
                 label="Create Account"
                 active="true"
-                path="./createAccount"
+                path="/createAccount"
               ></ListItemSideBar>
               <ListItemSideBar
                 iconClass="fa fa-credit-card"
                 label="CloseAccount"
-                path="./closeAccount"
+                path="/closeAccount"
               ></ListItemSideBar>
               <ListItemSideBar
                 iconClass="fa fa-exchange"
