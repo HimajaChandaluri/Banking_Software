@@ -1,3 +1,3 @@
 # Bank Software Project (Team 6)
 
-Hello, World!
+[Jira](https://cmpe202-team6.atlassian.net/secure/BrowseProjects.jspa)
