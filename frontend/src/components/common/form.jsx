@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import Input from "./Input";
+import Select from "./Select";
 class Form extends Component {
   state = {
     data: {},
@@ -8,20 +9,22 @@ class Form extends Component {
   };
 
   validate = () => {
+    const errors = { ...this.state.errors };
+
     const result = Joi.validate(this.state.data, this.schema, {
       abortEarly: false,
     });
-    debugger;
-    if (!result.error) {
-      if (!this.state.errors.confirmPassword) {
-        return null;
-      } else {
-        return this.state.errors;
+
+    if (!result.error && !this.state.errors) return null;
+    else {
+      if (result?.error) {
+        const validationErrors = {};
+        for (let item of result.error.details)
+          validationErrors[item.path[0]] = item.message;
+        return { ...validationErrors, ...errors };
       }
+      return errors;
     }
-    const errors = {};
-    for (let item of result.error.details) errors[item.path[0]] = item.message;
-    return errors;
   };
 
   validateProperty = (input) => {
@@ -39,6 +42,7 @@ class Form extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const errors = this.validate();
+
     this.setState({ errors: errors || {} });
     if (errors) return;
 
@@ -61,14 +65,12 @@ class Form extends Component {
     const data = { ...this.state.data };
     const errors = { ...this.state.errors };
     data[e.currentTarget.name] = e.currentTarget.value;
-    this.setState({ data });
-    if (e.currentTarget.value !== this.state.data.password) {
+
+    if (e.currentTarget.value !== this.state.data.password)
       errors[e.currentTarget.name] = "passwords do not match";
-      this.setState({ errors });
-    } else {
-      errors[e.currentTarget.name] = undefined;
-      this.setState({ errors });
-    }
+    else delete errors[e.currentTarget.name];
+
+    this.setState({ data, errors });
   };
 
   renderInput = (name, label, type) => {
@@ -80,6 +82,18 @@ class Form extends Component {
         onChange={this.handleChange}
         error={this.state.errors[name]}
         type={type}
+      />
+    );
+  };
+  renderSelect = (name, label, options) => {
+    return (
+      <Select
+        name={name}
+        label={label}
+        options={options}
+        onChange={this.handleChange}
+        value={this.state.data[name]}
+        error={this.state.errors[name]}
       />
     );
   };

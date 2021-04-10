@@ -1,4 +1,5 @@
 import React from "react";
+import "../../App.css";
 
 const Input = (props) => {
   return (
@@ -10,7 +11,7 @@ const Input = (props) => {
         name={props.name}
         id={props.name}
         type={props.type}
-        className="form-control"
+        className="form-control form-element"
       />
       {props.error && <div className="alert alert-danger">{props.error}</div>}
     </div>
