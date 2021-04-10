@@ -3,7 +3,7 @@ import jwtDecode from "jwt-decode";
 import { apiUrl } from "../config.json";
 
 const apiEndpoint = apiUrl + "/auth";
-const tokenKey = "token";
+const tokenKey = "token.bank";
 
 http.setJwt(getJwt());
 
@@ -24,8 +24,10 @@ export function getCurrentUser() {
   //actual code
   try {
     const jwt = localStorage.getItem(tokenKey);
+    console.log("RETURNING DATA");
     return jwtDecode(jwt);
   } catch (ex) {
+    console.log("RETURNING NULL");
     return null;
   }
 
@@ -35,7 +37,7 @@ export function getCurrentUser() {
   //   _id: "1234",
   //   name: "Himaja Chandaluri",
   //   email: "himaja.chandaluri@gmail.com",
-  //   isAdmin: false,
+  //   isAdmin: true,
   //   iat: 1617904344,
   // };
 }

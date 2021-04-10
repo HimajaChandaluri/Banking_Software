@@ -10,9 +10,9 @@
 }
 
 .fa-navbar-icons {
-  margin: 10px;
+  padding-right: 10px;
   align-self: center;
-  margin-top: 15%;
-  padding: auto;
+  margin-top: 5px;
+  float: left;
   color: white;
 }
