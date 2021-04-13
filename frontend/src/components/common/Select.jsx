@@ -9,6 +9,7 @@ const Select = (props) => {
         name={props.name}
         id={props.name}
         onChange={props.onChange}
+        value={props.value}
       >
         <option value="" />
         {props.options.map((option) => (

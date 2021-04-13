@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const config = require("config");
+const Joi = require("joi");
+const fs = require("fs");
 
 const userSchema = new mongoose.Schema({
   firstName: {
@@ -94,9 +96,9 @@ const userSchema = new mongoose.Schema({
       savingAccount: new mongoose.Schema({
         accountNumber: {
           type: Number,
-          unique: true,
           minlength: 8,
           maxlength: 9,
+          sparse: true,
         },
 
         balance: {
@@ -116,9 +118,9 @@ const userSchema = new mongoose.Schema({
       checkingAccount: new mongoose.Schema({
         accountNumber: {
           type: Number,
-          unique: true,
           minlength: 8,
           maxlength: 9,
+          sparse: true,
         },
 
         balance: {
@@ -156,12 +158,50 @@ const User = mongoose.model("User", userSchema);
 
 function validateUserInput(user) {
   const schema = Joi.object({
-    // validations here
+    firstName: Joi.string().min(2).max(50).required(),
+    lastName: Joi.string().min(2).max(50).required(),
+    email: Joi.string().email().required(),
+    phoneNumber: Joi.string().regex(/^\d+$/).length(10).required(),
+
+    dateOfBirth: Joi.date().required(),
+    address: Joi.string().min(5).max(500).required(),
+    city: Joi.string().min(2).max(50).required(),
+    state: Joi.string().min(2).required(),
+    zip: Joi.string().regex(/^\d+$/).length(5).required(),
+    password: Joi.string().min(5).required(),
+    savingsAccount: Joi.boolean(),
+    checkingAccount: Joi.boolean(),
   });
 
   return schema.validate(user);
 }
 
+function getAccountNumbers() {
+  const fileData = fs.readFileSync(__dirname + "/AccountNumber.json", "utf8");
+  const accNumData = JSON.parse(fileData);
+  return accNumData;
+}
+function setAccountNumbers(
+  accountNumber,
+  savingsAccountNumber,
+  checkingsAccountNumber
+) {
+  const customerAccountDetails = {
+    accountNumber: accountNumber,
+    savingsAccountNumber: savingsAccountNumber,
+    checkingsAccountNumber: checkingsAccountNumber,
+  };
+
+  const jsonString = JSON.stringify(customerAccountDetails);
+  try {
+    fs.writeFileSync(__dirname + "/AccountNumber.json", jsonString);
+  } catch (err) {
+    console.log("Error writing file", err);
+  }
+}
+
 module.exports.userSchema = userSchema;
 module.exports.validate = validateUserInput;
 module.exports.User = User;
+module.exports.getAccountNumbers = getAccountNumbers;
+module.exports.setAccountNumbers = setAccountNumbers;

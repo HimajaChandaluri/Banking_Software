@@ -1,4 +1,6 @@
 const config = require("config");
+const users = require("./routes/users");
+var cors = require("cors");
 
 const express = require("express");
 const app = express();
@@ -19,8 +21,9 @@ mongoose
   })
   .then(() => console.log("Connected to Database"))
   .catch((err) => console.log("Unable to connect to database "));
-
+app.use(cors());
 app.use(express.json());
+app.use("/users", users);
 
 // all base routes here
 

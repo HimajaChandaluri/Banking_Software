@@ -27,18 +27,21 @@ class CreateAccount extends Form {
       checkingAccount: true,
     },
     errors: {},
+    showSuccessBanner: false,
+    showWarningBanner: false,
   };
+  baseState = { ...this.state };
   doSubmit = async () => {
     try {
       const response = await register(this.state.data);
-      if (response && response.status === 200)
-        console.log("registered successfully");
+      if (response && response.status === 200) {
+        this.baseState.showSuccessBanner = true;
+        this.setState(this.baseState);
+      }
     } catch (ex) {
-      const errors = { ...this.state.errors };
-      if (ex.response && ex.response.status === 400)
-        errors.username = "user already exists";
-
-      this.setState({ errors });
+      if (ex.response && ex.response.status === 400) {
+        this.setState({ showWarningBanner: true });
+      }
     }
   };
 
@@ -54,30 +57,24 @@ class CreateAccount extends Form {
 
   handleChangeForCheckbox = (e) => {
     const data = { ...this.state.data };
-    debugger;
     data[e.currentTarget.name] = !data[e.currentTarget.name];
     this.setState({ data }, () => this.checkIfAccountTypeSelected());
   };
 
   schema = {
-    firstName: Joi.string().min(5).required().label("First Name"),
-    lastName: Joi.string().min(5).required().label("Last Name"),
+    firstName: Joi.string().min(2).required().label("First Name"),
+    lastName: Joi.string().min(2).required().label("Last Name"),
     email: Joi.string().email().required().label("Email"),
-    phoneNumber: Joi.number()
-      .integer()
-      .min(10 ** 9)
-      .max(10 ** 10 - 1)
+    phoneNumber: Joi.string()
+      .regex(/^\d+$/)
+      .length(10)
       .required()
       .label("Phone Number"),
     dateOfBirth: Joi.date().required(),
     address: Joi.string().max(100).required(),
     city: Joi.string().max(10).required(),
     state: Joi.string().min(2).required(),
-    zip: Joi.number()
-      .integer()
-      .min(10 ** 4)
-      .max(10 ** 5 - 1)
-      .required(),
+    zip: Joi.string().regex(/^\d+$/).length(5).required().label("Zip"),
     password: Joi.string().min(6).required(),
     confirmPassword: Joi.string().min(6).required(),
     savingsAccount: Joi.boolean(),
@@ -87,6 +84,32 @@ class CreateAccount extends Form {
   render() {
     return (
       <div className="container">
+        {this.state.showSuccessBanner && (
+          <div className="alert alert-success alert-dismissible fade show">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              onClick={() => this.setState({ showSuccessBanner: false })}
+            >
+              &times;
+            </button>
+            Account created successfully!
+          </div>
+        )}
+        {this.state.showWarningBanner && (
+          <div className="alert alert-warning alert-dismissible">
+            <button
+              type="button"
+              className="close"
+              data-dismiss="alert"
+              onClick={() => this.setState({ showWarningBanner: false })}
+            >
+              &times;
+            </button>
+            Account already exists with same email address or phone number.
+          </div>
+        )}
         <div className="row justify-content-center">
           <h1 className="mt-4 mb-4">Registration</h1>
         </div>
