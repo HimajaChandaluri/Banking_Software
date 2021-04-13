@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
+import { isEmpty } from "lodash";
 import Input from "./Input";
 import Select from "./Select";
+
 class Form extends Component {
   state = {
     data: {},
@@ -31,7 +33,6 @@ class Form extends Component {
     const obj = { [input.name]: input.value };
 
     const schema = { [input.name]: this.schema[input.name] };
-    console.log("schema: ", schema);
     const { error } = Joi.validate(obj, schema);
     return error
       ? input.name === "dateOfBirth"
@@ -44,7 +45,7 @@ class Form extends Component {
     const errors = this.validate();
 
     this.setState({ errors: errors || {} });
-    if (errors) return;
+    if (!isEmpty(errors)) return;
 
     this.doSubmit();
   };

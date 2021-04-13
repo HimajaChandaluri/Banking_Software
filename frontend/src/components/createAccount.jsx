@@ -5,6 +5,7 @@ import { UsaStates } from "usa-states";
 import Form from "./common/form";
 import Input from "./common/Input";
 import "../App.css";
+import { register } from "../services/userService";
 
 var usStates = new UsaStates();
 
@@ -23,26 +24,39 @@ class CreateAccount extends Form {
       password: "",
       confirmPassword: "",
       savingsAccount: false,
-      checkingAccount: false,
+      checkingAccount: true,
     },
-    errors: {
-      accounts: "Select atleast one account",
-    },
+    errors: {},
   };
-  doSubmit = () => {
-    console.log("submitted");
+  doSubmit = async () => {
+    try {
+      const response = await register(this.state.data);
+      if (response && response.status === 200)
+        console.log("registered successfully");
+    } catch (ex) {
+      const errors = { ...this.state.errors };
+      if (ex.response && ex.response.status === 400)
+        errors.username = "user already exists";
+
+      this.setState({ errors });
+    }
+  };
+
+  checkIfAccountTypeSelected = () => {
+    const { data, errors } = this.state;
+    if (data.savingsAccount || data.checkingAccount) {
+      delete errors.accounts;
+    } else {
+      errors.accounts = "Select atleast one account";
+    }
+    this.setState({ errors });
   };
 
   handleChangeForCheckbox = (e) => {
     const data = { ...this.state.data };
-    const errors = { ...this.state.errors };
+    debugger;
     data[e.currentTarget.name] = !data[e.currentTarget.name];
-    this.setState({ data });
-
-    if (data.savingsAccount || data.checkingAccount) {
-      delete errors.accounts;
-      this.setState({ errors });
-    }
+    this.setState({ data }, () => this.checkIfAccountTypeSelected());
   };
 
   schema = {
@@ -74,7 +88,7 @@ class CreateAccount extends Form {
     return (
       <div className="container">
         <div className="row justify-content-center">
-          <h1>Registration</h1>
+          <h1 className="mt-4 mb-4">Registration</h1>
         </div>
         <form onSubmit={this.handleSubmit}>
           <div className="row">
@@ -113,37 +127,41 @@ class CreateAccount extends Form {
               />
             </div>
           </div>
-
-          <div class="form-check">
+          <label className="form-check-label">
+            Select atleast one type of account
+          </label>
+          <div className="form-check">
             <input
-              class="form-check-input"
+              className="form-check-input"
               type="checkbox"
               value={this.state.data.savingsAccount}
+              checked={this.state.data.savingsAccount}
               id="savingsAccount"
               name="savingsAccount"
               onChange={this.handleChangeForCheckbox}
             />
-            <label class="form-check-label" for="savingsAccount">
+            <label className="form-check-label" htmfor="savingsAccount">
               Savings Account
             </label>
           </div>
 
-          <div class="form-check">
+          <div className="form-check">
             <input
-              class="form-check-input"
+              className="form-check-input"
               type="checkbox"
               value={this.state.data.checkingAccount}
+              checked={this.state.data.checkingAccount}
               id="checkingAccount"
               name="checkingAccount"
               onChange={this.handleChangeForCheckbox}
             />
-            <label class="form-check-label" for="checkingAccount">
+            <label className="form-check-label" htmfor="checkingAccount">
               Checking Account
             </label>
           </div>
-          {this.state.errors.accounts && (
+          {this.state.errors?.accounts && (
             <div className="alert alert-danger">
-              {this.state.errors.accounts}
+              {this.state.errors?.accounts}
             </div>
           )}
           <div className="row justify-content-center">
