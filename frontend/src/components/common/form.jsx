@@ -34,11 +34,7 @@ class Form extends Component {
 
     const schema = { [input.name]: this.schema[input.name] };
     const { error } = Joi.validate(obj, schema);
-    return error
-      ? input.name === "dateOfBirth"
-        ? "dateOfBirth should be of format mm/dd/yyyy"
-        : error.details[0].message
-      : null;
+    return error ? error.details[0].message : null;
   };
 
   handleSubmit = (e) => {
@@ -122,7 +118,7 @@ class Form extends Component {
     return (
       <button
         disabled={!isEmpty(this.validate())}
-        className="btn  btn-custom"
+        className="btn btn-custom"
         onClick={onClick}
       >
         {label}

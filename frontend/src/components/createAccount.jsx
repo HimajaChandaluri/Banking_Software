@@ -67,16 +67,12 @@ class CreateAccount extends Form {
     firstName: Joi.string().min(2).max(50).required().label("First Name"),
     lastName: Joi.string().min(2).max(50).required().label("Last Name"),
     email: Joi.string().email().required().label("Email"),
-    phoneNumber: Joi.string()
-      .regex(/^\d+$/)
-      .length(10)
-      .required()
-      .label("Phone Number"),
+    phoneNumber: Joi.string().length(10).required().label("Phone Number"),
     dateOfBirth: Joi.date().required(),
     address: Joi.string().min(5).max(500).required(),
     city: Joi.string().min(2).max(50).required(),
     state: Joi.string().min(2).max(100).required(),
-    zip: Joi.string().regex(/^\d+$/).length(5).required().label("Zip"),
+    zip: Joi.string().length(5).required().label("Zip"),
     password: Joi.string().min(6).required(),
     confirmPassword: Joi.string().min(6).required(),
     savingsAccount: Joi.boolean(),
@@ -124,7 +120,7 @@ class CreateAccount extends Form {
             </div>
             <div className="col">
               {this.renderInput("lastName", "Last Name", "text")}
-              {this.renderInput("phoneNumber", "Phone Number", "text")}
+              {this.renderInput("phoneNumber", "Phone Number", "number")}
               {this.renderInput("address", "Address", "text")}
             </div>
           </div>
@@ -133,9 +129,15 @@ class CreateAccount extends Form {
               {this.renderInput("city", "City", "text")}
             </div>
             <div className="col">
-              {this.renderSelect("state", "State", usStates.states)}
+              {this.renderSelect(
+                "state",
+                "State",
+                usStates.states.map((state) => state.name)
+              )}
             </div>
-            <div className="col">{this.renderInput("zip", "Zip", "text")}</div>
+            <div className="col">
+              {this.renderInput("zip", "Zip", "number")}
+            </div>
           </div>
           <div className="row">
             <div className="col">

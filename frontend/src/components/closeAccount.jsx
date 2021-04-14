@@ -15,10 +15,7 @@ class CloseAccount extends Form {
 
   schema = {
     accountType: Joi.string().required().label("Account Type"),
-    accountNumber: Joi.number()
-      .min(10000000)
-      .max(99999999)
-      .label("Account Number"),
+    accountNumber: Joi.string().length(8).label("Account Number"),
   };
 
   doSubmit = async () => {
@@ -82,7 +79,7 @@ class CloseAccount extends Form {
             )}
           </div>
           <div style={{ fontSize: "20px" }}>
-            {this.renderInput("accountNumber", "Account Number", "text")}
+            {this.renderInput("accountNumber", "Account Number", "number")}
           </div>
           {this.renderButton("Delete Account")}
         </form>
