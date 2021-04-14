@@ -62,8 +62,8 @@ class CreateAccount extends Form {
   };
 
   schema = {
-    firstName: Joi.string().min(2).required().label("First Name"),
-    lastName: Joi.string().min(2).required().label("Last Name"),
+    firstName: Joi.string().min(2).max(50).required().label("First Name"),
+    lastName: Joi.string().min(2).max(50).required().label("Last Name"),
     email: Joi.string().email().required().label("Email"),
     phoneNumber: Joi.string()
       .regex(/^\d+$/)
@@ -71,9 +71,9 @@ class CreateAccount extends Form {
       .required()
       .label("Phone Number"),
     dateOfBirth: Joi.date().required(),
-    address: Joi.string().max(100).required(),
-    city: Joi.string().max(10).required(),
-    state: Joi.string().min(2).required(),
+    address: Joi.string().min(5).max(500).required(),
+    city: Joi.string().min(2).max(50).required(),
+    state: Joi.string().min(2).max(100).required(),
     zip: Joi.string().regex(/^\d+$/).length(5).required().label("Zip"),
     password: Joi.string().min(6).required(),
     confirmPassword: Joi.string().min(6).required(),
@@ -88,7 +88,7 @@ class CreateAccount extends Form {
           <div className="alert alert-success alert-dismissible fade show">
             <button
               type="button"
-              class="close"
+              className="close"
               data-dismiss="alert"
               onClick={() => this.setState({ showSuccessBanner: false })}
             >

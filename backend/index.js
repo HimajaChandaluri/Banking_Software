@@ -21,8 +21,10 @@ mongoose
   })
   .then(() => console.log("Connected to Database"))
   .catch((err) => console.log("Unable to connect to database "));
+
 app.use(cors());
 app.use(express.json());
+
 app.use("/users", users);
 
 // all base routes here

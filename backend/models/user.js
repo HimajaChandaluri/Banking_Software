@@ -75,7 +75,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    minlength: 5,
+    minlength: 6,
     maxlength: 1024,
   },
 
@@ -166,9 +166,9 @@ function validateUserInput(user) {
     dateOfBirth: Joi.date().required(),
     address: Joi.string().min(5).max(500).required(),
     city: Joi.string().min(2).max(50).required(),
-    state: Joi.string().min(2).required(),
+    state: Joi.string().min(2).max(100).required(),
     zip: Joi.string().regex(/^\d+$/).length(5).required(),
-    password: Joi.string().min(5).required(),
+    password: Joi.string().min(6).required(),
     savingsAccount: Joi.boolean(),
     checkingAccount: Joi.boolean(),
   });
@@ -181,6 +181,7 @@ function getAccountNumbers() {
   const accNumData = JSON.parse(fileData);
   return accNumData;
 }
+
 function setAccountNumbers(
   accountNumber,
   savingsAccountNumber,

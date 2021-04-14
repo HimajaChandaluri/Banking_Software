@@ -20,7 +20,6 @@ const SideBar = () => {
               <ListItemSideBar
                 iconClass="fa fa-credit-card"
                 label="Create Account"
-                active="true"
                 path="/createAccount"
               ></ListItemSideBar>
               <ListItemSideBar

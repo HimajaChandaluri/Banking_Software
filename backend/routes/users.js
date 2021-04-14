@@ -25,7 +25,10 @@ router.post("/", async (req, res) => {
     return res.status(400).send(result.error.details[0].message);
 
   let user = await User.findOne({ email: req.body.email });
-  if (user) return res.status(400).send("Account already exists");
+  if (user) {
+    console.log("USER ", user);
+    return res.status(400).send("Account already exists");
+  }
 
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(req.body.password, salt);
@@ -89,9 +92,35 @@ router.post("/", async (req, res) => {
       checkingsAccountNumber
     );
   } catch (err) {
+    console.log("ERR ", err);
     return res.status(400).send("Account already exists");
   }
   res.send("Account created successfully");
+});
+
+router.delete("/", async (req, res) => {
+  const { accountType, accountNumber } = req.body;
+  console.log("DATA: ", accountType, " , ", accountNumber);
+  if (accountType === "userAccount") {
+    let result = await User.deleteOne({ accountNumber: accountNumber });
+    if (result.deletedCount) {
+      res.send("Account deleted successfully");
+    } else res.status(400).send("Account number does not exist");
+  } else if (accountType === "checkingAccount") {
+    let result = await User.findOne({
+      "accounts.checkingAccount.accountNumber": accountNumber,
+    }).updateOne({ "accounts.checkingAccount": null });
+    if (result.nModified) {
+      res.send("Account deleted successfully");
+    } else res.status(400).send("Account number does not exist");
+  } else if (accountType === "savingAccount") {
+    let result = await User.findOne({
+      "accounts.savingAccount.accountNumber": accountNumber,
+    }).updateOne({ "accounts.savingAccount": null });
+    if (result.nModified) {
+      res.send("Account deleted successfully");
+    } else res.status(400).send("Account number does not exist");
+  }
 });
 
 module.exports = router;
