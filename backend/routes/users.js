@@ -100,20 +100,20 @@ router.post("/", async (req, res) => {
 
 router.delete("/", async (req, res) => {
   const { accountType, accountNumber } = req.body;
-  console.log("DATA: ", accountType, " , ", accountNumber);
-  if (accountType === "userAccount") {
+  console.log("DATA IN DELETE: ", req.body);
+  if (accountType === "User Account") {
     let result = await User.deleteOne({ accountNumber: accountNumber });
     if (result.deletedCount) {
       res.send("Account deleted successfully");
     } else res.status(400).send("Account number does not exist");
-  } else if (accountType === "checkingAccount") {
+  } else if (accountType === "Checking Account") {
     let result = await User.findOne({
       "accounts.checkingAccount.accountNumber": accountNumber,
     }).updateOne({ "accounts.checkingAccount": null });
     if (result.nModified) {
       res.send("Account deleted successfully");
     } else res.status(400).send("Account number does not exist");
-  } else if (accountType === "savingAccount") {
+  } else if (accountType === "Saving Account") {
     let result = await User.findOne({
       "accounts.savingAccount.accountNumber": accountNumber,
     }).updateOne({ "accounts.savingAccount": null });

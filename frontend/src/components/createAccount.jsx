@@ -30,7 +30,9 @@ class CreateAccount extends Form {
     showSuccessBanner: false,
     showWarningBanner: false,
   };
+
   baseState = { ...this.state };
+
   doSubmit = async () => {
     try {
       const response = await register(this.state.data);
@@ -111,7 +113,7 @@ class CreateAccount extends Form {
           </div>
         )}
         <div className="row justify-content-center">
-          <h1 className="mt-4 mb-4">Registration</h1>
+          <h1 className="mt-4 mb-4">Create Account</h1>
         </div>
         <form onSubmit={this.handleSubmit}>
           <div className="row">

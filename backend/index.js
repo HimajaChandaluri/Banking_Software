@@ -25,7 +25,7 @@ mongoose
 app.use(cors());
 app.use(express.json());
 
-app.use("/users", users);
+app.use("/api/user", users);
 
 // all base routes here
 

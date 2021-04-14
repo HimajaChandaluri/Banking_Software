@@ -1,9 +1,10 @@
 import http from "./httpService";
+import { apiUrl } from "../config.json";
 
-const apiUrl = "http://localhost:3900/users";
+const apiEndpoint = apiUrl + "/user";
 
 export async function register(user) {
-  const response = await http.post(apiUrl, {
+  return await http.post(apiEndpoint, {
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
@@ -17,5 +18,14 @@ export async function register(user) {
     savingsAccount: user.savingsAccount,
     checkingAccount: user.checkingAccount,
   });
-  return response;
+}
+
+export async function deleteAccount(details) {
+  console.log("DETAILS: ", details);
+  return await http.delete(apiEndpoint, {
+    data: {
+      accountType: details.accountType,
+      accountNumber: details.accountNumber,
+    },
+  });
 }

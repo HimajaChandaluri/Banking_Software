@@ -40,6 +40,7 @@ class Form extends Component {
         : error.details[0].message
       : null;
   };
+
   handleSubmit = (e) => {
     e.preventDefault();
     const errors = this.validate();
@@ -86,6 +87,7 @@ class Form extends Component {
       />
     );
   };
+
   renderSelect = (name, label, options) => {
     return (
       <Select
@@ -96,6 +98,35 @@ class Form extends Component {
         value={this.state.data[name]}
         error={this.state.errors[name]}
       />
+    );
+  };
+
+  renderRadioOptions = (name, label, type) => {
+    return (
+      <div className="form-check">
+        <label className="form-check-label">
+          <input
+            className="form-check-input"
+            type={type}
+            value={label}
+            onChange={this.handleChange}
+            name={name}
+          ></input>
+          {label}
+        </label>
+      </div>
+    );
+  };
+
+  renderButton = (label, onClick) => {
+    return (
+      <button
+        disabled={!isEmpty(this.validate())}
+        className="btn  btn-custom"
+        onClick={onClick}
+      >
+        {label}
+      </button>
     );
   };
 }
