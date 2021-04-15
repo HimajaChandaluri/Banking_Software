@@ -1,5 +1,6 @@
 const config = require("config");
 const users = require("./routes/users");
+const auth = require("./routes/auth");
 var cors = require("cors");
 
 const express = require("express");
@@ -26,6 +27,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/user", users);
+app.use("/api/auth", auth);
 
 // all base routes here
 

@@ -20,7 +20,6 @@ class CloseAccount extends Form {
 
   doSubmit = async () => {
     try {
-      console.log(this.state.data);
       const response = await deleteAccount(this.state.data);
       if (response && response.status === 200) {
         this.baseState.showSuccessBanner = true;

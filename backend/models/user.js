@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const config = require("config");
 const Joi = require("joi");
 const fs = require("fs");
+const jwt = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema({
   firstName: {

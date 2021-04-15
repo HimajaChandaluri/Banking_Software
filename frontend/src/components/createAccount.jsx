@@ -35,6 +35,7 @@ class CreateAccount extends Form {
 
   doSubmit = async () => {
     try {
+      console.log("STATE: ", this.state.data);
       const response = await register(this.state.data);
       if (response && response.status === 200) {
         this.baseState.showSuccessBanner = true;

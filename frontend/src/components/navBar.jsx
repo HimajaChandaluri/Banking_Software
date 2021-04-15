@@ -40,7 +40,7 @@ const NavBar = () => {
               <ListItemNavBar
                 iconClass="fa fa-sign-out"
                 label="Sign Out"
-                path="/"
+                path="/logout"
               ></ListItemNavBar>
             </React.Fragment>
           )}

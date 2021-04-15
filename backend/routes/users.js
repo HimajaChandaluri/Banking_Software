@@ -3,6 +3,8 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
+const auth = require("../middleware/auth");
+const admin = require("../middleware/admin");
 const {
   User,
   validate,
@@ -10,7 +12,7 @@ const {
   setAccountNumbers,
 } = require("../models/user");
 
-router.post("/", async (req, res) => {
+router.post("/", auth, admin, async (req, res) => {
   const data = getAccountNumbers();
   const accountNumber = data.accountNumber + 1;
   const savingsAccountNumber = req.body.savingsAccount
@@ -98,7 +100,7 @@ router.post("/", async (req, res) => {
   res.send("Account created successfully");
 });
 
-router.delete("/", async (req, res) => {
+router.delete("/", auth, admin, async (req, res) => {
   const { accountType, accountNumber } = req.body;
   console.log("DATA IN DELETE: ", req.body);
   if (accountType === "User Account") {
