@@ -1,6 +1,7 @@
 const config = require("config");
 const users = require("./routes/users");
 const auth = require("./routes/auth");
+const transactions = require("./routes/transactions");
 var cors = require("cors");
 
 const express = require("express");
@@ -26,8 +27,9 @@ mongoose
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/user", users);
+app.use("/api/users", users);
 app.use("/api/auth", auth);
+app.use("/api/user/transactions", transactions);
 
 // all base routes here
 

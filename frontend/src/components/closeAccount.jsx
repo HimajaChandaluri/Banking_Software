@@ -69,12 +69,23 @@ class CloseAccount extends Form {
         <form onSubmit={this.handleSubmit}>
           <p style={{ fontSize: "20px" }}> Select Account Type</p>
           <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-            {this.renderRadioOptions("accountType", "User Account", "radio")}
-            {this.renderRadioOptions("accountType", "Saving Account", "radio")}
+            {this.renderRadioOptions(
+              "accountType",
+              "User Account",
+              "radio",
+              false
+            )}
+            {this.renderRadioOptions(
+              "accountType",
+              "Saving Account",
+              "radio",
+              false
+            )}
             {this.renderRadioOptions(
               "accountType",
               "Checking Account",
-              "radio"
+              "radio",
+              false
             )}
           </div>
           <div style={{ fontSize: "20px" }}>

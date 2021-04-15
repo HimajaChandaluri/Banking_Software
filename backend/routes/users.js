@@ -28,7 +28,6 @@ router.post("/", auth, admin, async (req, res) => {
 
   let user = await User.findOne({ email: req.body.email });
   if (user) {
-    console.log("USER ", user);
     return res.status(400).send("Account already exists");
   }
 
@@ -95,7 +94,7 @@ router.post("/", auth, admin, async (req, res) => {
     );
   } catch (err) {
     console.log("ERR ", err);
-    return res.status(400).send("Account already exists");
+    return res.status(400).send("error:", err);
   }
   res.send("Account created successfully");
 });
@@ -123,6 +122,12 @@ router.delete("/", auth, admin, async (req, res) => {
       res.send("Account deleted successfully");
     } else res.status(400).send("Account number does not exist");
   }
+});
+
+router.get("/:id", auth, async (req, res) => {
+  let user = await User.findById(req.params.id);
+
+  res.send(user.accounts);
 });
 
 module.exports = router;

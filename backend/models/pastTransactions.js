@@ -7,7 +7,11 @@ const pastTransactionSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
-
+      accountNumber: {
+        type: Number,
+        minlength: 8,
+        maxlength: 9,
+      },
       accountReference: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -21,6 +25,11 @@ const pastTransactionSchema = new mongoose.Schema({
       accountType: {
         type: String,
         required: true,
+      },
+      accountNumber: {
+        type: Number,
+        minlength: 8,
+        maxlength: 9,
       },
 
       accountReference: {

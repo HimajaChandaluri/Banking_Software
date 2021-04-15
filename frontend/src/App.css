@@ -46,3 +46,7 @@
   color: white !important;
   background: #6930c3 !important;
 }
+
+.disabled-label {
+  color: #6c757d !important;
+}
