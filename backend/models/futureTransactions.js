@@ -7,6 +7,12 @@ const futureTransactionSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
+      accountNumber: {
+        type: Number,
+        minlength: 8,
+        maxlength: 9,
+        required: true,
+      },
 
       accountReference: {
         type: mongoose.Schema.Types.ObjectId,
@@ -23,9 +29,15 @@ const futureTransactionSchema = new mongoose.Schema({
         required: true,
       },
 
+      accountNumber: {
+        type: Number,
+        minlength: 8,
+        maxlength: 9,
+        required: true,
+      },
+
       accountReference: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
       },
     }),
     required: true,
@@ -50,17 +62,8 @@ const futureTransactionSchema = new mongoose.Schema({
 
 const FutureTransaction = mongoose.model(
   "FutureTransaction",
-  futureTransactionsSchema
+  futureTransactionSchema
 );
 
-function validateFutureTransactionsInput(futureTransaction) {
-  const schema = Joi.object({
-    // validations here
-  });
-
-  return schema.validate(futureTransaction);
-}
-
 module.exports.futureTransactionSchema = futureTransactionSchema;
-module.exports.validate = validateFutureTransactionsInput;
 module.exports.FutureTransaction = FutureTransaction;

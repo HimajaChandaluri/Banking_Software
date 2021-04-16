@@ -36,6 +36,7 @@ export async function getUserDetails(id) {
 
 export async function makeTransfer(data) {
   return await http.post(apiUrl + "/user/transactions", {
+    senderId: data.userId,
     typeOfTransfer: data.typeOfTransfer,
     fromAccount: data.fromAccount,
     toAccount: data.toAccount,

@@ -20,6 +20,7 @@ const howFrequent = [
 class NewTransfer extends Form {
   state = {
     data: {
+      userId: "",
       checkingAccount: false,
       savingAccount: false,
       typeOfTransfer: "",
@@ -43,6 +44,7 @@ class NewTransfer extends Form {
     const userAccounts = [...this.state.userAccounts];
 
     let userAccountDetails = await getUserDetails(user._id);
+    data.userId = user._id;
 
     if (userAccountDetails.data.checkingAccount) {
       data.checkingAccount = true;
@@ -79,6 +81,7 @@ class NewTransfer extends Form {
   };
 
   schema = {
+    userId: Joi.string().required(),
     typeOfTransfer: Joi.string().required(),
     fromAccount: Joi.string().length(8).required().label("Account number"),
     toAccount: Joi.string()
@@ -88,7 +91,7 @@ class NewTransfer extends Form {
       .label("Account numbers should be different"),
     amount: Joi.number().positive().required().label("Amount"),
     frequency: Joi.string().required().label("Frequency"),
-    startOn: Joi.date().required(),
+    startOn: Joi.date().allow(""),
     endsOn: Joi.date().allow(""),
     checkingAccount: Joi.boolean(),
     savingAccount: Joi.boolean(),
@@ -161,7 +164,9 @@ class NewTransfer extends Form {
                   "From Account",
                   this.state.transferFromOptions
                 )}
-                {this.bothAccountsExists()
+                {this.bothAccountsExists() &&
+                this.state.data.typeOfTransfer ===
+                  "Transfer between my accounts"
                   ? this.renderSelect(
                       "toAccount",
                       "To Account",
@@ -174,7 +179,8 @@ class NewTransfer extends Form {
               </div>
               <div className="col">
                 {this.renderSelect("frequency", "Frequency", howFrequent)}
-                {this.renderDateInput("startOn", "StartOn", "date")}
+                {this.state.data.frequency !== "One time immediately" &&
+                  this.renderDateInput("startOn", "StartOn", "date")}
                 {!this.state.data.frequency.startsWith("One time") &&
                   this.renderDateInput("endsOn", "EndsOn", "date")}
                 {this.state.data.typeOfTransfer ===
