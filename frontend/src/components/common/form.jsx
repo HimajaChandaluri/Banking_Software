@@ -4,7 +4,7 @@ import { isEmpty } from "lodash";
 import Input from "./Input";
 import Select from "./Select";
 import "../../App.css";
-import { format } from "date-fns";
+import { format, add } from "date-fns";
 
 class Form extends Component {
   state = {
@@ -95,7 +95,12 @@ class Form extends Component {
         onChange={this.handleChange}
         error={this.state.errors[name]}
         type={type}
-        min={format(new Date(), "yyyy-MM-dd")}
+        min={format(
+          add(new Date(), {
+            days: 1,
+          }),
+          "yyyy-MM-dd"
+        )}
       />
     );
   };
