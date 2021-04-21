@@ -1,0 +1,14 @@
+[Unit]
+Description=SJSU Team6 Banking App node.js backend
+
+[Service]
+ExecStart=/home/ubuntu/app/backend/index.js
+Restart=always
+User=nobody
+Group=nogroup
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+WorkingDirectory=/home/ubuntu/app/backend
+
+[Install]
+WantedBy=multi-user.target
