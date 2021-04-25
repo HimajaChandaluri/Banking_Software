@@ -9,7 +9,8 @@ class Home extends Component {
     console.log("Got user data again in HOME: ", user);
 
     if (!user) {
-      return <h1>Home - unprotected</h1>;
+      //return <h1>Home - unprotected</h1>;
+	return (<Redirect to={{ pathname: "/Login",}}></Redirect>);
     } else {
       if (user && user.isAdmin) {
         return (
