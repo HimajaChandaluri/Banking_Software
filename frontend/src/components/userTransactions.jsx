@@ -39,10 +39,15 @@ class UserTransactions extends Component {
 
   state = {};
   render() {
+	var { account="" } = this.props.location.state || {};
+	if(account === ""){
+		// TODO: Replace with primary checking account
+		account = "Primary Checking";
+	}
     return (
     <div className="container">
       <div className="row justify-content-center">
-          <h1 className="mt-4 mb-4">Primary Saving Account -4567</h1>
+          <h1 className="mt-4 mb-4">Account {account}</h1>
       </div>
       <h3>Summary</h3>
       <h2>Available Balance (as of today):  900$</h2><br></br>

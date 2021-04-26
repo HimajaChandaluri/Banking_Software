@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class UserAccount extends Component {
   constructor(props) {
@@ -23,7 +24,12 @@ class UserAccount extends Component {
 			const { Name, Type, Balance } = user
 			return (
 				<tr key={Name}>
-					<td>{Name}</td>
+					<Link to={{
+						pathname: "transactions",
+						state: {
+							account: Name
+						}
+					}}>{Name}</Link>
 					<td>{Type}</td>
 					<td>{Balance}</td>
 				</tr>
