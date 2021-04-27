@@ -9,11 +9,8 @@ class Login extends Form {
   state = {
     data: { username: "", password: "" },
     errors: {},
-    showSuccessBanner: false,
     showWarningBanner: false,
   };
-
-  baseState = { ...this.state };
 
   schema = {
     username: Joi.string().required(),
@@ -24,11 +21,7 @@ class Login extends Form {
     const { username, password } = this.state.data;
     const response = await login(username, password);
     if (response) {
-      this.baseState.showSuccessBanner = true;
-      this.setState(this.baseState);
-      setTimeout(() => {
-        window.location = "/";
-      }, 300);
+      window.location = "/";
     } else {
       this.setState({ showWarningBanner: true });
     }
@@ -40,19 +33,6 @@ class Login extends Form {
     if (!user) {
       return (
         <div className="container">
-          {this.state.showSuccessBanner && (
-            <div className="alert alert-success alert-dismissible fade show">
-              <button
-                type="button"
-                className="close"
-                data-dismiss="alert"
-                onClick={() => this.setState({ showSuccessBanner: false })}
-              >
-                &times;
-              </button>
-              Logging you in momentarily
-            </div>
-          )}
           {this.state.showWarningBanner && (
             <div className="alert alert-warning alert-dismissible">
               <button
