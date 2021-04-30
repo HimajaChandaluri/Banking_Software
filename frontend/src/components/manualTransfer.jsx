@@ -3,7 +3,7 @@ import Joi from "joi-browser";
 import { isEmpty } from "lodash";
 import { compareDesc } from "date-fns";
 import Form from "./common/form";
-import { adminTransfer } from "../services/userService";
+import { makeTransfer } from "../services/userService";
 
 var howFrequent = [
   "One time immediately",
@@ -65,7 +65,7 @@ class ManualTransfer extends Form {
 
   doSubmit = async () => {
     try {
-      const response = await adminTransfer(this.state.data);
+      const response = await makeTransfer(this.state.data);
       if (response && response.status === 200) {
         this.baseState.showSuccessBanner = true;
         this.setState(this.baseState);

@@ -7,13 +7,16 @@ const {
   PastTransaction,
   validate,
   getAccountType,
+  getAccountDetails,
 } = require("../models/pastTransactions");
 const { User } = require("../models/user");
 const { FutureTransaction } = require("../models/futureTransactions");
 
 const externalTransfer = "Transfer to an account in other bank";
 const oneTimeTransfer = "One time immediately";
-
+const deposit = "Deposit money";
+const internalTransfer = "Transfer to someone within a bank";
+const transferBetweenMyAccounts = "Transfer between my accounts";
 router.post("/", auth, async (req, res) => {
   const result = validate(req.body);
   if (result.error) {
@@ -22,6 +25,8 @@ router.post("/", auth, async (req, res) => {
 
   let senderAccountType = await getAccountType(req.body.fromAccount);
   let receiverAccountType = await getAccountType(req.body.toAccount);
+  const senderAccountDetails = await getAccountDetails(req.body.fromAccount);
+  const receiverAccountDetails = await getAccountDetails(req.body.toAccount);
 
   if (
     receiverAccountType === null &&
@@ -30,18 +35,17 @@ router.post("/", auth, async (req, res) => {
     return res.status(400).send("Invalid Receiver account number");
   }
 
-  const senderAccountDetails = await User.findById(req.body.senderId);
-  let receiverAccountDetails = "";
-  if (receiverAccountType === "checkingAccount") {
-    receiverAccountDetails = await User.findOne({
-      "accounts.checkingAccount.accountNumber": req.body.toAccount,
-    });
-  } else {
-    receiverAccountDetails = await User.findOne({
-      "accounts.savingAccount.accountNumber": req.body.toAccount,
-    });
+  if (
+    senderAccountDetails &&
+    senderAccountDetails.accounts[senderAccountType].balance < req.body.amount
+  ) {
+    return res.status(400).send("Insufficient funds");
   }
-  if (req.body.typeOfTransfer !== externalTransfer) {
+
+  if (
+    req.body.typeOfTransfer === internalTransfer ||
+    req.body.typeOfTransfer === transferBetweenMyAccounts
+  ) {
     if (req.body.frequency === oneTimeTransfer) {
       senderAccountDetails.accounts[senderAccountType].balance =
         senderAccountDetails.accounts[senderAccountType].balance -
@@ -79,7 +83,6 @@ router.post("/", auth, async (req, res) => {
         await receiverAccountDetails.save();
         res.send("Transferred successfully");
       } catch (err) {
-        console.log("ERR ", err);
         return res.status(400).send("error:", err);
       }
     } else {
@@ -111,11 +114,10 @@ router.post("/", auth, async (req, res) => {
         await receiverAccountDetails.save();
         res.send("Scheduled your transfer successfully");
       } catch (err) {
-        console.log("ERR ", err);
         return res.status(400).send("error:", err);
       }
     }
-  } else {
+  } else if (req.body.typeOfTransfer === externalTransfer) {
     if (req.body.frequency === oneTimeTransfer) {
       senderAccountDetails.accounts[senderAccountType].balance =
         senderAccountDetails.accounts[senderAccountType].balance -
@@ -126,10 +128,6 @@ router.post("/", auth, async (req, res) => {
           accountType: senderAccountType,
           accountNumber: req.body.fromAccount,
           accountReference: senderAccountDetails._id,
-        },
-        receiverAccount: {
-          accountType: "externalBankAccount",
-          accountNumber: req.body.toAccount,
         },
         amount: req.body.amount,
       });
@@ -153,10 +151,6 @@ router.post("/", auth, async (req, res) => {
           accountNumber: req.body.fromAccount,
           accountReference: senderAccountDetails._id,
         },
-        receiverAccount: {
-          accountType: "externalBankAccount",
-          accountNumber: req.body.toAccount,
-        },
         amount: req.body.amount,
         dateInitiatedOn: req.body.startOn,
         typeOfPayment: req.body.frequency,
@@ -173,6 +167,31 @@ router.post("/", auth, async (req, res) => {
         console.log("ERR ", err);
         return res.status(400).send("error:", err);
       }
+    }
+  } else {
+    receiverAccountDetails.accounts[receiverAccountType].balance =
+      receiverAccountDetails.accounts[receiverAccountType].balance +
+      parseInt(req.body.amount);
+
+    currentTransaction = new PastTransaction({
+      receiverAccount: {
+        accountType: receiverAccountType,
+        accountNumber: req.body.toAccount,
+        accountReference: receiverAccountDetails._id,
+      },
+      amount: req.body.amount,
+    });
+    try {
+      await receiverAccountDetails.save();
+      const result = await currentTransaction.save();
+      receiverAccountDetails.accounts[
+        receiverAccountType
+      ].pastTransactions.push(result._id);
+      await receiverAccountDetails.save();
+      res.send("Transferred successfully");
+    } catch (err) {
+      console.log("ERR ", err);
+      return res.status(400).send("error:", err);
     }
   }
 });
