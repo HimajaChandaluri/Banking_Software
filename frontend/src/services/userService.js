@@ -47,3 +47,16 @@ export async function makeTransfer(data) {
     routingNumber: data.routingNumber,
   });
 }
+
+export async function adminTransfer(data) {
+  return await http.post(apiUrl + "/admin/transactions", {
+    typeOfTransfer: data.typeOfTransfer,
+    fromAccount: data.fromAccount,
+    toAccount: data.toAccount,
+    amount: data.amount,
+    frequency: data.frequency,
+    startOn: data.startOn,
+    endsOn: data.endsOn,
+    routingNumber: data.routingNumber,
+  });
+}

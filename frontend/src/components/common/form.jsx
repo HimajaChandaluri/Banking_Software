@@ -118,7 +118,7 @@ class Form extends Component {
     );
   };
 
-  renderRadioOptions = (name, label, type, isDisabled) => {
+  renderRadioOptions = (name, label, type, isDisabled, selected) => {
     return (
       <div className="form-check">
         <label
@@ -131,6 +131,7 @@ class Form extends Component {
             onChange={this.handleChange}
             name={name}
             disabled={isDisabled}
+            checked={selected && label === selected}
           ></input>
           {label}
         </label>

@@ -7,7 +7,7 @@ import { compareDesc } from "date-fns";
 import auth from "../services/authService";
 import { makeTransfer } from "../services/userService";
 
-const howFrequent = [
+var howFrequent = [
   "One time immediately",
   "One time On",
   "Weekly",
@@ -23,7 +23,7 @@ class NewTransfer extends Form {
       userId: "",
       checkingAccount: false,
       savingAccount: false,
-      typeOfTransfer: "",
+      typeOfTransfer: "Transfer to someone within a bank",
       fromAccount: "",
       toAccount: "",
       amount: "",
@@ -213,19 +213,22 @@ class NewTransfer extends Form {
                 "typeOfTransfer",
                 "Transfer between my accounts",
                 "radio",
-                !this.bothAccountsExists()
+                !this.bothAccountsExists(),
+                this.state.data.typeOfTransfer
               )}
               {this.renderRadioOptions(
                 "typeOfTransfer",
                 "Transfer to someone within a bank",
                 "radio",
-                false
+                false,
+                this.state.data.typeOfTransfer
               )}
               {this.renderRadioOptions(
                 "typeOfTransfer",
                 "Transfer to an account in other bank",
                 "radio",
-                false
+                false,
+                this.state.data.typeOfTransfer
               )}
             </div>
             <div className="mt-4 mb-4">
