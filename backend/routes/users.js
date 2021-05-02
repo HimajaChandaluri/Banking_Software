@@ -11,6 +11,31 @@ const {
   getAccountNumbers,
   setAccountNumbers,
 } = require("../models/user");
+const { PastTransaction } = require("../models/pastTransactions");
+const { FutureTransaction } = require("../models/futureTransactions");
+
+router.get("/myTransactions", auth, async (req, res) => {
+  const userRef = req.user;
+
+  const user = await User.findById(userRef._id);
+
+  const pastTrans = await getPastTrans(user);
+  const futureTrans = await getfutureTrans(user);
+
+  const allTrans = [...pastTrans, ...futureTrans];
+  console.log("AllTrans: ", allTrans);
+
+  const allUniqueTrans = _.uniqBy(allTrans, "_id");
+  console.log("AllUniqTrans: ", allUniqueTrans);
+
+  res.send(allUniqueTrans);
+});
+
+router.get("/:id", auth, async (req, res) => {
+  let user = await User.findById(req.params.id);
+
+  res.send(user.accounts);
+});
 
 router.post("/", auth, admin, async (req, res) => {
   const data = getAccountNumbers();
@@ -124,10 +149,44 @@ router.delete("/", auth, admin, async (req, res) => {
   }
 });
 
-router.get("/:id", auth, async (req, res) => {
-  let user = await User.findById(req.params.id);
+async function getPastTrans(user) {
+  let pastTransactionsArray = [];
 
-  res.send(user.accounts);
-});
+  if (user.accounts.checkingAccount) {
+    for (tran of user.accounts.checkingAccount.pastTransactions) {
+      console.log("ID: ", tran);
+      pastTransactionsArray.push(await PastTransaction.findById(tran));
+    }
+  }
+
+  if (user.accounts.savingAccount) {
+    for (tran of user.accounts.savingAccount.pastTransactions) {
+      console.log("ID: ", tran);
+      pastTransactionsArray.push(await PastTransaction.findById(tran));
+    }
+  }
+
+  return pastTransactionsArray;
+}
+
+async function getfutureTrans(user) {
+  let futureTransactionsArray = [];
+
+  if (user.accounts.checkingAccount) {
+    for (tran of user.accounts.checkingAccount.futureTransactions) {
+      console.log("ID: ", tran);
+      futureTransactionsArray.push(await FutureTransaction.findById(tran));
+    }
+  }
+
+  if (user.accounts.savingAccount) {
+    for (tran of user.accounts.savingAccount.futureTransactions) {
+      console.log("ID: ", tran);
+      futureTransactionsArray.push(await FutureTransaction.findById(tran));
+    }
+  }
+
+  return futureTransactionsArray;
+}
 
 module.exports = router;

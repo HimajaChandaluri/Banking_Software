@@ -17,6 +17,7 @@ const oneTimeTransfer = "One time immediately";
 const deposit = "Deposit money";
 const internalTransfer = "Transfer to someone within a bank";
 const transferBetweenMyAccounts = "Transfer between my accounts";
+
 router.post("/", auth, async (req, res) => {
   const result = validate(req.body);
   if (result.error) {

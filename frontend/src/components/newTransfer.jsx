@@ -205,82 +205,84 @@ class NewTransfer extends Form {
             Transaction failed
           </div>
         )}
-        <div className="row justify-content-center">
-          <h1 className="mt-4 mb-4">New Transfer</h1>
-        </div>
         {!this.state.isTransferCompleted && (
-          <form onSubmit={this.validateAndSubmit}>
-            <p style={{ fontSize: "20px" }}> Choose type of transfer</p>
-            <div>
-              {this.renderRadioOptions(
-                "typeOfTransfer",
-                "Transfer between my accounts",
-                "radio",
-                !this.bothAccountsExists(),
-                this.state.data.typeOfTransfer
-              )}
-              {this.renderRadioOptions(
-                "typeOfTransfer",
-                "Transfer to someone within a bank",
-                "radio",
-                false,
-                this.state.data.typeOfTransfer
-              )}
-              {this.renderRadioOptions(
-                "typeOfTransfer",
-                "Transfer to an account in other bank",
-                "radio",
-                false,
-                this.state.data.typeOfTransfer
-              )}
+          <React.Fragment>
+            <div className="row justify-content-center">
+              <h1 className="mt-4 mb-4">New Transfer</h1>
             </div>
-            <div className="mt-4 mb-4">
-              <div className="row">
-                <div className="col">
-                  {this.renderSelect(
-                    "fromAccount",
-                    "From Account",
-                    this.state.transferFromOptions
-                  )}
-                  {this.bothAccountsExists() &&
-                  this.state.data.typeOfTransfer ===
-                    "Transfer between my accounts"
-                    ? this.renderSelect(
-                        "toAccount",
-                        "To Account",
-                        this.state.transferFromOptions.filter(
-                          (accNumber) =>
-                            accNumber != this.state.data.fromAccount
-                        )
-                      )
-                    : this.renderInput("toAccount", "To Account", "number")}
-                  {this.renderInput("amount", "Amount", "number")}
-                </div>
-                <div className="col">
-                  {this.renderSelect("frequency", "Frequency", howFrequent)}
-                  {this.state.data.frequency !== "One time immediately" &&
-                    this.renderDateInput("startOn", "StartOn", "date")}
-                  {!this.state.data.frequency.startsWith("One time") &&
-                    this.renderDateInput("endsOn", "EndsOn", "date")}
-                  {this.state.data.typeOfTransfer ===
-                    "Transfer to an account in other bank" &&
-                    this.renderInput(
-                      "routingNumber",
-                      "Routing Number",
-                      "number"
+            <form onSubmit={this.validateAndSubmit}>
+              <p style={{ fontSize: "20px" }}> Choose type of transfer</p>
+              <div>
+                {this.renderRadioOptions(
+                  "typeOfTransfer",
+                  "Transfer between my accounts",
+                  "radio",
+                  !this.bothAccountsExists(),
+                  this.state.data.typeOfTransfer
+                )}
+                {this.renderRadioOptions(
+                  "typeOfTransfer",
+                  "Transfer to someone within a bank",
+                  "radio",
+                  false,
+                  this.state.data.typeOfTransfer
+                )}
+                {this.renderRadioOptions(
+                  "typeOfTransfer",
+                  "Transfer to an account in other bank",
+                  "radio",
+                  false,
+                  this.state.data.typeOfTransfer
+                )}
+              </div>
+              <div className="mt-4 mb-4">
+                <div className="row">
+                  <div className="col">
+                    {this.renderSelect(
+                      "fromAccount",
+                      "From Account",
+                      this.state.transferFromOptions
                     )}
+                    {this.bothAccountsExists() &&
+                    this.state.data.typeOfTransfer ===
+                      "Transfer between my accounts"
+                      ? this.renderSelect(
+                          "toAccount",
+                          "To Account",
+                          this.state.transferFromOptions.filter(
+                            (accNumber) =>
+                              accNumber != this.state.data.fromAccount
+                          )
+                        )
+                      : this.renderInput("toAccount", "To Account", "number")}
+                    {this.renderInput("amount", "Amount", "number")}
+                  </div>
+                  <div className="col">
+                    {this.renderSelect("frequency", "Frequency", howFrequent)}
+                    {this.state.data.frequency !== "One time immediately" &&
+                      this.renderDateInput("startOn", "StartOn", "date")}
+                    {!this.state.data.frequency.startsWith("One time") &&
+                      this.renderDateInput("endsOn", "EndsOn", "date")}
+                    {this.state.data.typeOfTransfer ===
+                      "Transfer to an account in other bank" &&
+                      this.renderInput(
+                        "routingNumber",
+                        "Routing Number",
+                        "number"
+                      )}
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="row justify-content-center">
-              <button
-                disabled={!isEmpty(this.validate())}
-                className="btn btn-custom"
-              >
-                Transfer
-              </button>
-            </div>
-          </form>
+              <div className="row justify-content-center">
+                <button
+                  disabled={!isEmpty(this.validate())}
+                  className="btn btn-custom"
+                >
+                  Transfer
+                </button>
+              </div>
+            </form>
+          </React.Fragment>
         )}
       </div>
     );
