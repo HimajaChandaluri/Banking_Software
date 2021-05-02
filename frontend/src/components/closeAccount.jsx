@@ -45,7 +45,7 @@ class CloseAccount extends Form {
             >
               &times;
             </button>
-            Account deleted successfully!
+            Account closed successfully!
           </div>
         )}
         {this.state.showWarningBanner && (
@@ -63,36 +63,40 @@ class CloseAccount extends Form {
         )}
 
         <div className="row justify-content-center">
-          <h1 className="mt-4 mb-4">Delete Account</h1>
+          <h1 className="mt-4 mb-4">Close Account</h1>
         </div>
 
-        <form onSubmit={this.handleSubmit}>
-          <p style={{ fontSize: "20px" }}> Select Account Type</p>
-          <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-            {this.renderRadioOptions(
-              "accountType",
-              "User Account",
-              "radio",
-              false
-            )}
-            {this.renderRadioOptions(
-              "accountType",
-              "Saving Account",
-              "radio",
-              false
-            )}
-            {this.renderRadioOptions(
-              "accountType",
-              "Checking Account",
-              "radio",
-              false
-            )}
-          </div>
-          <div style={{ fontSize: "20px" }}>
-            {this.renderInput("accountNumber", "Account Number", "number")}
-          </div>
-          {this.renderButton("Delete Account")}
-        </form>
+        <div style={{ marginLeft: "32%", marginTop: "10px" }}>
+          <form onSubmit={this.handleSubmit}>
+            <p style={{ fontSize: "20px" }}> Select Account Type</p>
+            <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+              {this.renderRadioOptions(
+                "accountType",
+                "User Account",
+                "radio",
+                false
+              )}
+              {this.renderRadioOptions(
+                "accountType",
+                "Saving Account",
+                "radio",
+                false
+              )}
+              {this.renderRadioOptions(
+                "accountType",
+                "Checking Account",
+                "radio",
+                false
+              )}
+            </div>
+            <div style={{ fontSize: "20px", width: "50%" }}>
+              {this.renderInput("accountNumber", "Account Number", "number")}
+            </div>
+            <div style={{ marginLeft: "17%", marginTop: "30px" }}>
+              {this.renderButton("Close Account")}
+            </div>
+          </form>
+        </div>
       </div>
     );
   }

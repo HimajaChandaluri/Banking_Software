@@ -38,7 +38,6 @@ class App extends Component {
                   path="/transactions"
                   component={UserTransactions}
                 ></UserRoute>
-                <UserRoute path="/transfer" component={Transfer}></UserRoute>
                 <UserRoute
                   path="/newTransfer"
                   component={NewTransfer}

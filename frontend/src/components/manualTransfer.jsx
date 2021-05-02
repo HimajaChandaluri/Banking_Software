@@ -108,6 +108,9 @@ class ManualTransfer extends Form {
             Transaction failed.
           </div>
         )}
+        <div className="row justify-content-center">
+          <h1 className="mt-4 mb-4">Manual Transfer</h1>
+        </div>
         <form onSubmit={this.validateAndSubmit}>
           <p style={{ fontSize: "20px" }}> Choose type of transfer</p>
           <div>

@@ -1,6 +1,7 @@
 import React from "react";
 import auth from "../services/authService";
 import ListItemSideBar from "./common/ListItemSideBar";
+import logo from "../images/teamLogo.png";
 // import "../styles/sidebar.css";
 
 const SideBar = () => {
@@ -12,7 +13,15 @@ const SideBar = () => {
       <div className="sidebar-sticky">
         <ul className="nav flex-column">
           <li className="side-nav-item">
-            <img src="../images/logo.png" alt="LOGO"></img>
+            <img
+              src={logo}
+              alt="LOGO"
+              style={{
+                width: "100%",
+                marginLeft: "10px",
+                marginTop: "40px",
+              }}
+            ></img>
           </li>
 
           {user && user.isAdmin && (
@@ -24,7 +33,7 @@ const SideBar = () => {
               ></ListItemSideBar>
               <ListItemSideBar
                 iconClass="fa fa-credit-card"
-                label="CloseAccount"
+                label="Close Account"
                 path="/closeAccount"
               ></ListItemSideBar>
               <ListItemSideBar
@@ -54,7 +63,7 @@ const SideBar = () => {
               <ListItemSideBar
                 iconClass="fa fa-exchange"
                 label="Transfers"
-                path="/transfer"
+                path="/newTransfer"
               ></ListItemSideBar>
               <ListItemSideBar
                 iconClass="fa fa-cog"

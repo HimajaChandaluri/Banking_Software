@@ -175,7 +175,7 @@ class NewTransfer extends Form {
 
   render() {
     return (
-      <div>
+      <div className="container">
         {this.state.isTransferCompleted && (
           <div>
             <div className="alert alert-success alert-dismissible fade show">
@@ -205,6 +205,9 @@ class NewTransfer extends Form {
             Transaction failed
           </div>
         )}
+        <div className="row justify-content-center">
+          <h1 className="mt-4 mb-4">New Transfer</h1>
+        </div>
         {!this.state.isTransferCompleted && (
           <form onSubmit={this.validateAndSubmit}>
             <p style={{ fontSize: "20px" }}> Choose type of transfer</p>

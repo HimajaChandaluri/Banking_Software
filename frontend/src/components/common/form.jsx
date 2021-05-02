@@ -143,7 +143,7 @@ class Form extends Component {
     return (
       <button
         disabled={!isEmpty(this.validate())}
-        className="btn btn-custom"
+        className="btn btn-custom "
         onClick={onClick}
       >
         {label}

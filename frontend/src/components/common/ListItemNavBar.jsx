@@ -9,7 +9,12 @@ const ListItemNabBar = ({ iconClass, label, path }) => {
 
       <NavLink
         className="nav-link"
-        style={{ float: "right", padding: "0px" }}
+        style={{
+          float: "right",
+          padding: "0px",
+          fontFamily: "sans-serif",
+          letterSpacing: "1px",
+        }}
         to={path}
       >
         {label}
