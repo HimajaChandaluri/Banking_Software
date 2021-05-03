@@ -46,6 +46,7 @@ class NewTransfer extends Form {
     const userAccounts = [...this.state.userAccounts];
 
     let userAccountDetails = await getUserDetails(user._id);
+    console.log("User Balance: ", userAccountDetails.data);
     data.userId = user._id;
 
     if (userAccountDetails.data.checkingAccount) {
@@ -101,8 +102,11 @@ class NewTransfer extends Form {
 
   getAvailableBalance = () => {
     let availableBalance = 0;
+    console.log("LET AVA BAL: ", availableBalance);
     this.state.userAccounts.forEach((account) => {
+      console.log("Checking Balance of: ", this.state.data.fromAccount);
       if (account.accountNumber == this.state.data.fromAccount) {
+        console.log("Checking Balance of: ", account);
         availableBalance = account.balance;
       }
     });

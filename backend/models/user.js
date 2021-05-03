@@ -32,7 +32,6 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 10,
     maxlength: 12,
-    unique: true,
   },
 
   dateOfBirth: {

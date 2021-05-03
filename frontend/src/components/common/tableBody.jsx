@@ -18,7 +18,7 @@ class TableBody extends Component {
                     fontFamily: "Courier",
                   }}
                 >
-                  {_.get(item, column.path)}
+                  {_.get(item, column.path) || "-"}
                 </td>
               ))}
             </tr>

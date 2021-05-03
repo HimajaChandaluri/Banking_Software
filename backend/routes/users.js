@@ -48,9 +48,13 @@ router.post("/", auth, admin, async (req, res) => {
   if (result.error)
     return res.status(400).send(result.error.details[0].message);
 
-  let user = await User.findOne({ email: req.body.email });
-  if (user) {
-    return res.status(400).send("Account already exists");
+  try {
+    let user = await User.findOne({ email: req.body.email });
+    if (user) {
+      return res.status(400).send("Account already exists");
+    }
+  } catch (e) {
+    console.log("ERROR");
   }
 
   const salt = await bcrypt.genSalt(10);

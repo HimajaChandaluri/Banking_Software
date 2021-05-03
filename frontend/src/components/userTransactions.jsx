@@ -33,11 +33,15 @@ class UserTransactions extends Component {
         savingAccFutureTrans: allTrans[0].savingTrans[0].futureTrans,
       });
     }
+
+    this.setState({ selectedAccount: "All Accounts" });
   }
 
   async populateUserAccountNumbers() {
     const user = auth.getCurrentUser();
+
     const { data: userAccountDetails } = await getUserDetails(user._id);
+    console.log("CURRENT USER DETAILS: ", userAccountDetails);
 
     let accountNumbers = [...this.state.accountNumbers];
 
@@ -56,11 +60,12 @@ class UserTransactions extends Component {
       );
     }
 
-    this.setState({ accountNumbers });
+    this.setState({ accountNumbers, userAccountDetails });
   }
 
   handleChange = (e) => {
     console.log(e.currentTarget.value);
+    this.setState({ selectedAccount: e.currentTarget.value });
   };
 
   render() {
@@ -76,27 +81,19 @@ class UserTransactions extends Component {
           onChange={this.handleChange}
         />
 
-        {/* Past transactions */}
-        <div>
-          <div className="row justify-content-center">
-            <h4 className="mt-4 mb-4">Past Transactions</h4>
-            <PastTransactions
-              savingAccTrans={this.state.savingAccPastTrans}
-              checkingAccTrans={this.state.checkingAccPastTrans}
-            ></PastTransactions>
-          </div>
-        </div>
+        <PastTransactions
+          savingAccTrans={this.state.savingAccPastTrans}
+          checkingAccTrans={this.state.checkingAccPastTrans}
+          selected={this.state.selectedAccount}
+          userAccountDetails={this.state.userAccountDetails}
+        ></PastTransactions>
 
-        {/* Future transactions */}
-        <div>
-          <div className="row justify-content-center">
-            <h4 className="mt-4 mb-4">Future Transactions</h4>
-            <FutureTransactions
-              savingAccTrans={this.state.savingAccFutureTrans}
-              checkingAccTrans={this.state.checkingAccFutureTrans}
-            ></FutureTransactions>
-          </div>
-        </div>
+        <FutureTransactions
+          savingAccTrans={this.state.savingAccFutureTrans}
+          checkingAccTrans={this.state.checkingAccFutureTrans}
+          selected={this.state.selectedAccount}
+          userAccountDetails={this.state.userAccountDetails}
+        ></FutureTransactions>
       </div>
     );
   }
