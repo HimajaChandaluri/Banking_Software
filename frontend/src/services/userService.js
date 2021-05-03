@@ -46,3 +46,7 @@ export async function makeTransfer(data) {
     routingNumber: data.routingNumber,
   });
 }
+
+export async function getUserTransactions() {
+  return await http.get(apiEndpoint + "/myTransactions");
+}
