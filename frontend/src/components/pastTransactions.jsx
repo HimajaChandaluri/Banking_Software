@@ -1,17 +1,26 @@
 import React, { Component } from "react";
 import SelectWithoutBlankOption from "./common/selectWithoutBlankOption";
 import SearchBox from "./common/searchBox";
+import Pagination from "./common/pagination";
+import { paginate } from "../utils/paginate";
 import PastTransactionsTable from "./pastTransactionsTable";
 import _ from "lodash";
 
 class PastTransactions extends Component {
   state = {
     selectedTransType: "All",
+    pageSize: 4,
+    currentPage: 1,
   };
 
   handleChange = (e) => {
     console.log(e.currentTarget.value);
     this.setState({ selectedTransType: e.currentTarget.value });
+  };
+
+  handlePageChange = (page) => {
+    // console.log(page);
+    this.setState({ currentPage: page });
   };
 
   getTableData = () => {
@@ -23,6 +32,7 @@ class PastTransactions extends Component {
       selected,
       userAccountDetails,
     } = this.props;
+    const { pageSize, currentPage } = this.state;
 
     let data = [];
     if (selected === "All Accounts") {
@@ -100,10 +110,16 @@ class PastTransactions extends Component {
       filteredData = _.uniqBy(data, "_id");
     }
 
-    return filteredData;
+    const paginatedData = paginate(filteredData, currentPage, pageSize);
+
+    return { dataLength: filteredData.length, data: paginatedData };
   };
 
   render() {
+    const { pageSize, currentPage } = this.state;
+
+    const { dataLength, data } = this.getTableData();
+
     return (
       <React.Fragment>
         <div className="row justify-content-center">
@@ -122,9 +138,13 @@ class PastTransactions extends Component {
             <SearchBox value="" onChange={this.handleSearch}></SearchBox>
           </div>
         </div>
-        <PastTransactionsTable
-          data={this.getTableData()}
-        ></PastTransactionsTable>
+        <PastTransactionsTable data={data}></PastTransactionsTable>
+        <Pagination
+          itemsCount={dataLength}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          onPageChange={this.handlePageChange}
+        ></Pagination>
       </React.Fragment>
     );
   }

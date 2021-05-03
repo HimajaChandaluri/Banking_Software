@@ -50,3 +50,14 @@
 .disabled-label {
   color: #6c757d !important;
 }
+
+.pagination > li > a {
+  background-color: white;
+  color: #6930c3;
+}
+
+.pagination > .active > a {
+  color: white;
+  background-color: #6930c3 !important;
+  border: solid 1px #6930c3 !important;
+}
