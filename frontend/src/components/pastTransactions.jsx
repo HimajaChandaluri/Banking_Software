@@ -122,6 +122,43 @@ class PastTransactions extends Component {
         filteredData = _.uniqBy(filteredData, "_id");
         console.log("FILTERED DATA: ", filteredData);
       }
+    } else if (selectedTransType === "Deposit") {
+      if (savingAccRegex.test(selected)) {
+        filteredData = data.filter((tran) => {
+          return (
+            tran.receiverAccount &&
+            !tran.senderAccount &&
+            tran.receiverAccount.accountNumber ===
+              userAccountDetails.savingAccount.accountNumber
+          );
+        });
+        console.log("FILTERED DATA: ", filteredData);
+      } else if (checkingAccRegex.test(selected)) {
+        filteredData = data.filter((tran) => {
+          return (
+            tran.receiverAccount &&
+            !tran.senderAccount &&
+            tran.receiverAccount.accountNumber ===
+              userAccountDetails.checkingAccount.accountNumber
+          );
+        });
+        console.log("FILTERED DATA: ", filteredData);
+      } else {
+        filteredData = data.filter((tran) => {
+          return (
+            (tran.receiverAccount &&
+              !tran.senderAccount &&
+              tran.receiverAccount.accountNumber ===
+                userAccountDetails.checkingAccount.accountNumber) ||
+            (tran.receiverAccount &&
+              !tran.senderAccount &&
+              tran.receiverAccount.accountNumber ===
+                userAccountDetails.savingAccount.accountNumber)
+          );
+        });
+        filteredData = _.uniqBy(filteredData, "_id");
+        console.log("FILTERED DATA: ", filteredData);
+      }
     } else if (selectedTransType === "All") {
       filteredData = _.uniqBy(data, "_id");
     }
@@ -160,7 +197,7 @@ class PastTransactions extends Component {
             <SelectWithoutBlankOption
               name="pastTranChoice"
               label=""
-              options={["All", "Credit", "Debit"]}
+              options={["All", "Credit", "Debit", "Deposit"]}
               onChange={this.handleChange}
             />
           </div>
