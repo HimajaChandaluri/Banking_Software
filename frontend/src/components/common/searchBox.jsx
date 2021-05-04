@@ -8,7 +8,7 @@ const SearchBox = ({ value, onChange }) => {
         type="text"
         name="query"
         className="form-control form-element"
-        placeholder="Search..."
+        placeholder="Search by Account Number..."
         value={value}
         onChange={(e) => onChange(e.currentTarget.value)}
       ></input>

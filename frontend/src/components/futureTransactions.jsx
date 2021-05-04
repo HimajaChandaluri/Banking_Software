@@ -2,16 +2,33 @@ import React, { Component } from "react";
 import SelectWithoutBlankOption from "./common/selectWithoutBlankOption";
 import SearchBox from "./common/searchBox";
 import FutureTransactionsTable from "./futureTransactionsTable";
+import Pagination from "./common/pagination";
+import { paginate } from "../utils/paginate";
 import _ from "lodash";
 
 class FutureTransactions extends Component {
   state = {
     selectedTransType: "All",
+    pageSize: 4,
+    currentPage: 1,
+    searchQuery: "",
   };
 
   handleChange = (e) => {
     console.log(e.currentTarget.value);
-    this.setState({ selectedTransType: e.currentTarget.value });
+    this.setState({
+      selectedTransType: e.currentTarget.value,
+      currentPage: 1,
+      searchQuery: "",
+    });
+  };
+
+  handlePageChange = (page) => {
+    this.setState({ currentPage: page });
+  };
+
+  handleSearch = (query) => {
+    this.setState({ searchQuery: query, currentPage: 1 });
   };
 
   getTableData = () => {
@@ -23,6 +40,7 @@ class FutureTransactions extends Component {
       selected,
       userAccountDetails,
     } = this.props;
+    const { pageSize, currentPage, searchQuery } = this.state;
 
     let data = [];
     if (selected === "All Accounts") {
@@ -42,26 +60,30 @@ class FutureTransactions extends Component {
       if (savingAccRegex.test(selected)) {
         filteredData = data.filter((tran) => {
           return (
+            tran.receiverAccount &&
             tran.receiverAccount.accountNumber ===
-            userAccountDetails.savingAccount.accountNumber
+              userAccountDetails.savingAccount.accountNumber
           );
         });
         console.log("FILTERED DATA: ", filteredData);
       } else if (checkingAccRegex.test(selected)) {
         filteredData = data.filter((tran) => {
           return (
+            tran.receiverAccount &&
             tran.receiverAccount.accountNumber ===
-            userAccountDetails.checkingAccount.accountNumber
+              userAccountDetails.checkingAccount.accountNumber
           );
         });
         console.log("FILTERED DATA: ", filteredData);
       } else {
         filteredData = data.filter((tran) => {
           return (
-            tran.receiverAccount.accountNumber ===
-              userAccountDetails.checkingAccount.accountNumber ||
-            tran.receiverAccount.accountNumber ===
-              userAccountDetails.savingAccount.accountNumber
+            (tran.receiverAccount &&
+              tran.receiverAccount.accountNumber ===
+                userAccountDetails.checkingAccount.accountNumber) ||
+            (tran.receiverAccount &&
+              tran.receiverAccount.accountNumber ===
+                userAccountDetails.savingAccount.accountNumber)
           );
         });
         filteredData = _.uniqBy(filteredData, "_id");
@@ -71,26 +93,30 @@ class FutureTransactions extends Component {
       if (savingAccRegex.test(selected)) {
         filteredData = data.filter((tran) => {
           return (
+            tran.senderAccount &&
             tran.senderAccount.accountNumber ===
-            userAccountDetails.savingAccount.accountNumber
+              userAccountDetails.savingAccount.accountNumber
           );
         });
         console.log("FILTERED DATA: ", filteredData);
       } else if (checkingAccRegex.test(selected)) {
         filteredData = data.filter((tran) => {
           return (
+            tran.senderAccount &&
             tran.senderAccount.accountNumber ===
-            userAccountDetails.checkingAccount.accountNumber
+              userAccountDetails.checkingAccount.accountNumber
           );
         });
         console.log("FILTERED DATA: ", filteredData);
       } else {
         filteredData = data.filter((tran) => {
           return (
-            tran.senderAccount.accountNumber ===
-              userAccountDetails.checkingAccount.accountNumber ||
-            tran.senderAccount.accountNumber ===
-              userAccountDetails.savingAccount.accountNumber
+            (tran.senderAccount &&
+              tran.senderAccount.accountNumber ===
+                userAccountDetails.checkingAccount.accountNumber) ||
+            (tran.senderAccount &&
+              tran.senderAccount.accountNumber ===
+                userAccountDetails.savingAccount.accountNumber)
           );
         });
         filteredData = _.uniqBy(filteredData, "_id");
@@ -100,10 +126,30 @@ class FutureTransactions extends Component {
       filteredData = _.uniqBy(data, "_id");
     }
 
-    return filteredData;
+    if (searchQuery) {
+      filteredData = filteredData.filter(
+        (tran) =>
+          (tran.senderAccount &&
+            tran.senderAccount.accountNumber
+              .toString()
+              .startsWith(searchQuery)) ||
+          (tran.receiverAccount &&
+            tran.receiverAccount.accountNumber
+              .toString()
+              .startsWith(searchQuery))
+      );
+    }
+
+    const paginatedData = paginate(filteredData, currentPage, pageSize);
+
+    return { dataLength: filteredData.length, data: paginatedData };
   };
 
   render() {
+    const { pageSize, currentPage, searchQuery } = this.state;
+
+    const { dataLength, data } = this.getTableData();
+
     return (
       <React.Fragment>
         <div className="row justify-content-center">
@@ -119,12 +165,19 @@ class FutureTransactions extends Component {
             />
           </div>
           <div className="col-lg-8">
-            <SearchBox value="" onChange={this.handleSearch}></SearchBox>
+            <SearchBox
+              value={searchQuery}
+              onChange={this.handleSearch}
+            ></SearchBox>
           </div>
         </div>
-        <FutureTransactionsTable
-          data={this.getTableData()}
-        ></FutureTransactionsTable>
+        <FutureTransactionsTable data={data}></FutureTransactionsTable>
+        <Pagination
+          itemsCount={dataLength}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          onPageChange={this.handlePageChange}
+        ></Pagination>
       </React.Fragment>
     );
   }
