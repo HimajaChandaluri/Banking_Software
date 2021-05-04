@@ -21,7 +21,6 @@ const pastTransactionSchema = new mongoose.Schema({
         required: true,
       },
     }),
-    required: true,
   },
 
   receiverAccount: {
@@ -41,7 +40,6 @@ const pastTransactionSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
       },
     }),
-    required: true,
   },
 
   amount: {
@@ -63,15 +61,14 @@ const PastTransaction = mongoose.model(
 
 function validatePastTransactionsInput(pastTransaction) {
   const schema = Joi.object({
-    senderId: Joi.string().required(),
     typeOfTransfer: Joi.string().required(),
-    fromAccount: Joi.string().length(8).required(),
+    fromAccount: Joi.string().length(8).allow(""),
     toAccount: Joi.string()
       .length(8)
       .invalid(Joi.ref("fromAccount"))
       .required(),
     amount: Joi.number().positive().required(),
-    frequency: Joi.string().required(),
+    frequency: Joi.string().allow(""),
     startOn: Joi.date().allow(""),
     endsOn: Joi.date().allow(""),
     routingNumber: Joi.string().length(9).allow(""),
@@ -79,11 +76,14 @@ function validatePastTransactionsInput(pastTransaction) {
 
   return schema.validate(pastTransaction);
 }
+
 async function getAccountType(accountNumber) {
+  if (_.isEmpty(accountNumber)) {
+    return null;
+  }
   let CheckingAccount = await User.findOne({
     "accounts.checkingAccount.accountNumber": accountNumber,
   });
-
   let SavingsAccount = await User.findOne({
     "accounts.savingAccount.accountNumber": accountNumber,
   });
@@ -93,7 +93,25 @@ async function getAccountType(accountNumber) {
   else return null;
 }
 
+async function getAccountDetails(accountNumber) {
+  if (_.isEmpty(accountNumber)) {
+    return null;
+  }
+  let CheckingAccount = await User.findOne({
+    "accounts.checkingAccount.accountNumber": accountNumber,
+  });
+
+  let SavingsAccount = await User.findOne({
+    "accounts.savingAccount.accountNumber": accountNumber,
+  });
+
+  if (!_.isEmpty(CheckingAccount)) return CheckingAccount;
+  else if (!_.isEmpty(SavingsAccount)) return SavingsAccount;
+  else return null;
+}
+
 module.exports.pastTransactionSchema = pastTransactionSchema;
 module.exports.validate = validatePastTransactionsInput;
 module.exports.getAccountType = getAccountType;
 module.exports.PastTransaction = PastTransaction;
+module.exports.getAccountDetails = getAccountDetails;

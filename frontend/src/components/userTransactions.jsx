@@ -1,129 +1,102 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
-import { getTransactionHistory } from "../services/historyService";
-import { getUserDetails } from "../services/userService";
+import { getUserTransactions } from "../services/userService";
 import auth from "../services/authService";
-import "../App.css";
+import { getUserDetails } from "../services/userService";
+import SelectWithoutBlankOption from "./common/selectWithoutBlankOption";
+import PastTransactions from "./pastTransactions";
+import FutureTransactions from "./futureTransactions";
 
 class UserTransactions extends Component {
-  constructor(props) {
-    super(props) //since we are extending class Table so we have to use super in order to override Component class constructor
-    this.state = { //state is by default an object
-	activeAccount : 0,
-	accountBalance : 0,
-        transactions: [
-          { Date: '04-13-2021', Description: 'What is Lorem Ipsum Lorem Ipsum is simply dummy text', Amount: '200$', AvailableBalance: '120$' },
-          { Date: '04-13-2021', Description: 'What is Lorem Ipsum Lorem Ipsum is simply dummy text', Amount: '200$', AvailableBalance: '120$' },
-          { Date: '04-13-2021', Description: 'What is Lorem Ipsum Lorem Ipsum is simply dummy text', Amount: '200$', AvailableBalance: '120$' },
-          { Date: '04-13-2021', Description: 'What is Lorem Ipsum Lorem Ipsum is simply dummy text', Amount: '200$', AvailableBalance: '120$' },
-          { Date: '04-13-2021', Description: 'What is Lorem Ipsum Lorem Ipsum is simply dummy text', Amount: '200$', AvailableBalance: '120$' },
-          { Date: '04-13-2021', Description: 'What is Lorem Ipsum Lorem Ipsum is simply dummy text', Amount: '200$', AvailableBalance: '120$' },
-          { Date: '04-13-2021', Description: 'What is Lorem Ipsum Lorem Ipsum is simply dummy text', Amount: '200$', AvailableBalance: '120$' },
-          { Date: '04-13-2021', Description: 'What is Lorem Ipsum Lorem Ipsum is simply dummy text', Amount: '200$', AvailableBalance: '120$' }
-       ]
+  state = {
+    accountNumbers: [],
+    selectedAccount: "",
+  };
+
+  async componentDidMount() {
+    await this.populateUserAccountNumbers();
+    await this.populateUserTransactions();
+  }
+
+  async populateUserTransactions() {
+    const { data: allTrans } = await getUserTransactions();
+
+    if (allTrans[0].checkingTrans) {
+      this.setState({
+        checkingAccPastTrans: allTrans[0].checkingTrans[0].pastTrans,
+        checkingAccFutureTrans: allTrans[0].checkingTrans[0].futureTrans,
+      });
     }
- }
- renderTableHeader() {
-  let header = Object.keys(this.state.transactions[0])
-  return header.map((key, index) => {
-     return <th key={index}>{key.toUpperCase()}</th>
-  })
-}
- renderTableData() {
-  return this.state.transactions.map((user, index) => {
-     const { Date, Description, Amount, AvailableBalance } = user //destructuring
-     return (
-        <tr key={Date}>
-           <td>{Date}</td>
-           <td>{Description}</td>
-           <td>{Amount}</td>
-           <td>{AvailableBalance}</td>
-        </tr>
-     )
-  })
-}
 
-  state = {};
+    if (allTrans[0].savingTrans) {
+      this.setState({
+        savingAccPastTrans: allTrans[0].savingTrans[0].pastTrans,
+        savingAccFutureTrans: allTrans[0].savingTrans[0].futureTrans,
+      });
+    }
 
-async componentDidMount() {
-	// Get account selected from accounts page
-	var { account="" } = this.props.location.state || {};
+    this.setState({ selectedAccount: "All Accounts" });
+  }
 
-	//console.log("Selected Account", account);
+  async populateUserAccountNumbers() {
+    const user = auth.getCurrentUser();
 
-	// Get current user account details
-	const user = auth.getCurrentUser();
-	let userAccountDetails = await getUserDetails(user._id);
+    const { data: userAccountDetails } = await getUserDetails(user._id);
+    console.log("CURRENT USER DETAILS: ", userAccountDetails);
 
-	// Default to the first available account, if not selected
-	if(account === ""){
-		//console.log("No Accounts selected");
-		// Select Checking account if available
-		if(userAccountDetails.data.checkingAccount){
-			account = userAccountDetails.data.checkingAccount.accountNumber;
-		}else if (userAccountDetails.data.savingAccount){
-			account = userAccountDetails.data.savingAccount.accountNumber;
-		} else {
-			// No accounts. Redirect to the Accounts page
-			//console.log("No Accounts");
-			return <Redirect to="accounts" />
-		}
-		console.log("Defaulting to account", account);
-	}
+    let accountNumbers = [...this.state.accountNumbers];
 
-	let activeAccount = {...this.state.activeAccount};
-	activeAccount = account;
+    accountNumbers.push("All Accounts");
 
-	let accountBalance = {...this.state.accountBalance};
-	if(userAccountDetails.data.checkingAccount && userAccountDetails.data.checkingAccount.accountNumber===account){
-		accountBalance = userAccountDetails.data.checkingAccount.balance;
-	}else if(userAccountDetails.data.savingAccount){
-		accountBalance = userAccountDetails.data.savingAccount.balance;
-	}else{
-		accountBalance = 0;
-	}
+    if (userAccountDetails.checkingAccount) {
+      accountNumbers.push(
+        "CheckingAccount(" +
+          userAccountDetails.checkingAccount.accountNumber +
+          ")"
+      );
+    }
+    if (userAccountDetails.savingAccount) {
+      accountNumbers.push(
+        "SavingAccount(" + userAccountDetails.savingAccount.accountNumber + ")"
+      );
+    }
 
-	const transactionHistory = [...this.state.transactions];
+    this.setState({ accountNumbers, userAccountDetails });
+  }
 
-	// Fetch the transaction history
-	//getTransactionHistory(account);
-
-	this.setState({activeAccount, accountBalance, transactionHistory});
-}
+  handleChange = (e) => {
+    console.log(e.currentTarget.value);
+    this.setState({ selectedAccount: e.currentTarget.value });
+  };
 
   render() {
-	console.log("Rendering account", this.state.activeAccount);
-	let accountNameHidden = "XXXX" + (this.state.activeAccount).toString().slice(4);
-
     return (
-    <div className="container">
-      <div className="row justify-content-center">
-          <h1 className="mt-4 mb-4">Account {accountNameHidden}</h1>
-      </div>
-      <h3>Summary</h3>
-      <h2>Available Balance (as of today): ${this.state.accountBalance}</h2><br></br>
-      <form action="/" method="get">
-        <label htmlFor="header-search">
-            <span className="visually-hidden">Search UserTransactions : -</span>
-        </label>
-        <input
-            type="text"
-            id="header-search"
-            placeholder="search transactions"
-            name="s" 
+      <div className="container">
+        <div className="row justify-content-center">
+          <h1 className="mt-4 mb-4">Transactions</h1>
+        </div>
+        <SelectWithoutBlankOption
+          name="account"
+          label="Account"
+          options={this.state.accountNumbers}
+          onChange={this.handleChange}
         />
-        <button type="submit">Search</button>
-    </form><br></br>
-      <div>
-        <table id='users'>
-               <tbody>
-               <tr>{this.renderTableHeader()}</tr>
-                  {this.renderTableData()}
-               </tbody>
-            </table>
+
+        <PastTransactions
+          savingAccTrans={this.state.savingAccPastTrans}
+          checkingAccTrans={this.state.checkingAccPastTrans}
+          selected={this.state.selectedAccount}
+          userAccountDetails={this.state.userAccountDetails}
+        ></PastTransactions>
+
+        <FutureTransactions
+          savingAccTrans={this.state.savingAccFutureTrans}
+          checkingAccTrans={this.state.checkingAccFutureTrans}
+          selected={this.state.selectedAccount}
+          userAccountDetails={this.state.userAccountDetails}
+        ></FutureTransactions>
       </div>
-    </div>
-  )};
+    );
+  }
 }
 
 export default UserTransactions;

@@ -7,7 +7,7 @@ import { compareDesc } from "date-fns";
 import auth from "../services/authService";
 import { makeTransfer } from "../services/userService";
 
-const howFrequent = [
+var howFrequent = [
   "One time immediately",
   "One time On",
   "Weekly",
@@ -23,7 +23,7 @@ class NewTransfer extends Form {
       userId: "",
       checkingAccount: false,
       savingAccount: false,
-      typeOfTransfer: "",
+      typeOfTransfer: "Transfer to someone within a bank",
       fromAccount: "",
       toAccount: "",
       amount: "",
@@ -46,6 +46,7 @@ class NewTransfer extends Form {
     const userAccounts = [...this.state.userAccounts];
 
     let userAccountDetails = await getUserDetails(user._id);
+    console.log("User Balance: ", userAccountDetails.data);
     data.userId = user._id;
 
     if (userAccountDetails.data.checkingAccount) {
@@ -101,8 +102,11 @@ class NewTransfer extends Form {
 
   getAvailableBalance = () => {
     let availableBalance = 0;
+    console.log("LET AVA BAL: ", availableBalance);
     this.state.userAccounts.forEach((account) => {
+      console.log("Checking Balance of: ", this.state.data.fromAccount);
       if (account.accountNumber == this.state.data.fromAccount) {
+        console.log("Checking Balance of: ", account);
         availableBalance = account.balance;
       }
     });
@@ -175,7 +179,7 @@ class NewTransfer extends Form {
 
   render() {
     return (
-      <div>
+      <div className="container">
         {this.state.isTransferCompleted && (
           <div>
             <div className="alert alert-success alert-dismissible fade show">
@@ -206,75 +210,83 @@ class NewTransfer extends Form {
           </div>
         )}
         {!this.state.isTransferCompleted && (
-          <form onSubmit={this.validateAndSubmit}>
-            <p style={{ fontSize: "20px" }}> Choose type of transfer</p>
-            <div>
-              {this.renderRadioOptions(
-                "typeOfTransfer",
-                "Transfer between my accounts",
-                "radio",
-                !this.bothAccountsExists()
-              )}
-              {this.renderRadioOptions(
-                "typeOfTransfer",
-                "Transfer to someone within a bank",
-                "radio",
-                false
-              )}
-              {this.renderRadioOptions(
-                "typeOfTransfer",
-                "Transfer to an account in other bank",
-                "radio",
-                false
-              )}
+          <React.Fragment>
+            <div className="row justify-content-center">
+              <h1 className="mt-4 mb-4">New Transfer</h1>
             </div>
-            <div className="mt-4 mb-4">
-              <div className="row">
-                <div className="col">
-                  {this.renderSelect(
-                    "fromAccount",
-                    "From Account",
-                    this.state.transferFromOptions
-                  )}
-                  {this.bothAccountsExists() &&
-                  this.state.data.typeOfTransfer ===
-                    "Transfer between my accounts"
-                    ? this.renderSelect(
-                        "toAccount",
-                        "To Account",
-                        this.state.transferFromOptions.filter(
-                          (accNumber) =>
-                            accNumber != this.state.data.fromAccount
-                        )
-                      )
-                    : this.renderInput("toAccount", "To Account", "number")}
-                  {this.renderInput("amount", "Amount", "number")}
-                </div>
-                <div className="col">
-                  {this.renderSelect("frequency", "Frequency", howFrequent)}
-                  {this.state.data.frequency !== "One time immediately" &&
-                    this.renderDateInput("startOn", "StartOn", "date")}
-                  {!this.state.data.frequency.startsWith("One time") &&
-                    this.renderDateInput("endsOn", "EndsOn", "date")}
-                  {this.state.data.typeOfTransfer ===
-                    "Transfer to an account in other bank" &&
-                    this.renderInput(
-                      "routingNumber",
-                      "Routing Number",
-                      "number"
+            <form onSubmit={this.validateAndSubmit}>
+              <p style={{ fontSize: "20px" }}> Choose type of transfer</p>
+              <div>
+                {this.renderRadioOptions(
+                  "typeOfTransfer",
+                  "Transfer between my accounts",
+                  "radio",
+                  !this.bothAccountsExists(),
+                  this.state.data.typeOfTransfer
+                )}
+                {this.renderRadioOptions(
+                  "typeOfTransfer",
+                  "Transfer to someone within a bank",
+                  "radio",
+                  false,
+                  this.state.data.typeOfTransfer
+                )}
+                {this.renderRadioOptions(
+                  "typeOfTransfer",
+                  "Transfer to an account in other bank",
+                  "radio",
+                  false,
+                  this.state.data.typeOfTransfer
+                )}
+              </div>
+              <div className="mt-4 mb-4">
+                <div className="row">
+                  <div className="col">
+                    {this.renderSelect(
+                      "fromAccount",
+                      "From Account",
+                      this.state.transferFromOptions
                     )}
+                    {this.bothAccountsExists() &&
+                    this.state.data.typeOfTransfer ===
+                      "Transfer between my accounts"
+                      ? this.renderSelect(
+                          "toAccount",
+                          "To Account",
+                          this.state.transferFromOptions.filter(
+                            (accNumber) =>
+                              accNumber != this.state.data.fromAccount
+                          )
+                        )
+                      : this.renderInput("toAccount", "To Account", "number")}
+                    {this.renderInput("amount", "Amount", "number")}
+                  </div>
+                  <div className="col">
+                    {this.renderSelect("frequency", "Frequency", howFrequent)}
+                    {this.state.data.frequency !== "One time immediately" &&
+                      this.renderDateInput("startOn", "StartOn", "date")}
+                    {!this.state.data.frequency.startsWith("One time") &&
+                      this.renderDateInput("endsOn", "EndsOn", "date")}
+                    {this.state.data.typeOfTransfer ===
+                      "Transfer to an account in other bank" &&
+                      this.renderInput(
+                        "routingNumber",
+                        "Routing Number",
+                        "number"
+                      )}
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="row justify-content-center">
-              <button
-                disabled={!isEmpty(this.validate())}
-                className="btn btn-custom"
-              >
-                Transfer
-              </button>
-            </div>
-          </form>
+              <div className="row justify-content-center">
+                <button
+                  disabled={!isEmpty(this.validate())}
+                  className="btn btn-custom"
+                >
+                  Transfer
+                </button>
+              </div>
+            </form>
+          </React.Fragment>
         )}
       </div>
     );

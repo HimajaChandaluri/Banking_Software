@@ -19,7 +19,6 @@ const futureTransactionSchema = new mongoose.Schema({
         required: true,
       },
     }),
-    required: true,
   },
 
   receiverAccount: {
@@ -40,7 +39,6 @@ const futureTransactionSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
       },
     }),
-    required: true,
   },
 
   amount: {
