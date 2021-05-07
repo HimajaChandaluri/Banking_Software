@@ -32,11 +32,11 @@ const SideBar = () => {
                 label="Manual Transfer"
                 path="/manualTransfer"
               ></ListItemSideBar>
-              <ListItemSideBar
+              {/* <ListItemSideBar
                 iconClass="fa fa-cog"
                 label="Settings"
                 path="/adminSettings"
-              ></ListItemSideBar>
+              ></ListItemSideBar> */}
             </React.Fragment>
           )}
           {user && !user.isAdmin && (
