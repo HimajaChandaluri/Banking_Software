@@ -1,7 +1,7 @@
 import http from "./httpService";
 import { apiUrl } from "../config.json";
 
-const apiEndpoint = apiUrl + "/user";
+const apiEndpoint = apiUrl + "/users";
 
 export async function register(user) {
   return await http.post(apiEndpoint, {
@@ -28,4 +28,25 @@ export async function deleteAccount(details) {
       accountNumber: details.accountNumber,
     },
   });
+}
+
+export async function getUserDetails(id) {
+  return await http.get(apiEndpoint + `/${id}`);
+}
+
+export async function makeTransfer(data) {
+  return await http.post(apiUrl + "/user/transactions", {
+    typeOfTransfer: data.typeOfTransfer,
+    fromAccount: data.fromAccount,
+    toAccount: data.toAccount,
+    amount: data.amount,
+    frequency: data.frequency,
+    startOn: data.startOn,
+    endsOn: data.endsOn,
+    routingNumber: data.routingNumber,
+  });
+}
+
+export async function getUserTransactions() {
+  return await http.get(apiEndpoint + "/myTransactions");
 }

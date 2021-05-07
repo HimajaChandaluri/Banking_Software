@@ -17,7 +17,13 @@ class ListItemSideBar extends Component {
         ></i>
         <NavLink
           className={this.renderActiveOrInactiveNavLinkClass(active)}
-          style={{ float: "left", padding: "0px", textAlign: "left" }}
+          style={{
+            float: "left",
+            padding: "0px",
+            textAlign: "left",
+            fontFamily: "sans-serif",
+            letterSpacing: "1px",
+          }}
           to={path}
         >
           <span data-feather="bar-chart-2"></span>

@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+const Joi = require("joi");
+const _ = require("lodash");
+const { User } = require("../models/user");
 
 const pastTransactionSchema = new mongoose.Schema({
   senderAccount: {
@@ -7,13 +10,17 @@ const pastTransactionSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
-
+      accountNumber: {
+        type: Number,
+        minlength: 8,
+        maxlength: 9,
+        required: true,
+      },
       accountReference: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
       },
     }),
-    required: true,
   },
 
   receiverAccount: {
@@ -22,13 +29,17 @@ const pastTransactionSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
+      accountNumber: {
+        type: Number,
+        minlength: 8,
+        maxlength: 9,
+        required: true,
+      },
 
       accountReference: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
       },
     }),
-    required: true,
   },
 
   amount: {
@@ -45,17 +56,62 @@ const pastTransactionSchema = new mongoose.Schema({
 
 const PastTransaction = mongoose.model(
   "PastTransaction",
-  pastTransactionsSchema
+  pastTransactionSchema
 );
 
 function validatePastTransactionsInput(pastTransaction) {
   const schema = Joi.object({
-    // validations here
+    typeOfTransfer: Joi.string().required(),
+    fromAccount: Joi.string().length(8).allow(""),
+    toAccount: Joi.string()
+      .length(8)
+      .invalid(Joi.ref("fromAccount"))
+      .required(),
+    amount: Joi.number().positive().required(),
+    frequency: Joi.string().allow(""),
+    startOn: Joi.date().allow(""),
+    endsOn: Joi.date().allow(""),
+    routingNumber: Joi.string().length(9).allow(""),
   });
 
   return schema.validate(pastTransaction);
 }
 
+async function getAccountType(accountNumber) {
+  if (_.isEmpty(accountNumber)) {
+    return null;
+  }
+  let CheckingAccount = await User.findOne({
+    "accounts.checkingAccount.accountNumber": accountNumber,
+  });
+  let SavingsAccount = await User.findOne({
+    "accounts.savingAccount.accountNumber": accountNumber,
+  });
+
+  if (!_.isEmpty(CheckingAccount)) return "checkingAccount";
+  else if (!_.isEmpty(SavingsAccount)) return "savingAccount";
+  else return null;
+}
+
+async function getAccountDetails(accountNumber) {
+  if (_.isEmpty(accountNumber)) {
+    return null;
+  }
+  let CheckingAccount = await User.findOne({
+    "accounts.checkingAccount.accountNumber": accountNumber,
+  });
+
+  let SavingsAccount = await User.findOne({
+    "accounts.savingAccount.accountNumber": accountNumber,
+  });
+
+  if (!_.isEmpty(CheckingAccount)) return CheckingAccount;
+  else if (!_.isEmpty(SavingsAccount)) return SavingsAccount;
+  else return null;
+}
+
 module.exports.pastTransactionSchema = pastTransactionSchema;
 module.exports.validate = validatePastTransactionsInput;
+module.exports.getAccountType = getAccountType;
 module.exports.PastTransaction = PastTransaction;
+module.exports.getAccountDetails = getAccountDetails;

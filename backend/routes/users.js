@@ -11,6 +11,28 @@ const {
   getAccountNumbers,
   setAccountNumbers,
 } = require("../models/user");
+const { PastTransaction } = require("../models/pastTransactions");
+const { FutureTransaction } = require("../models/futureTransactions");
+
+router.get("/myTransactions", auth, async (req, res) => {
+  const userRef = req.user;
+
+  const user = await User.findById(userRef._id);
+
+  const checkingTrans = await getCheckingAccountTrans(user);
+  const savingTrans = await getSavingAccountTrans(user);
+
+  const allTrans = [{ checkingTrans: checkingTrans, savingTrans: savingTrans }];
+  console.log("AllTrans: ", allTrans);
+
+  res.send(allTrans);
+});
+
+router.get("/:id", auth, async (req, res) => {
+  let user = await User.findById(req.params.id);
+
+  res.send(user.accounts);
+});
 
 router.post("/", auth, admin, async (req, res) => {
   const data = getAccountNumbers();
@@ -26,10 +48,13 @@ router.post("/", auth, admin, async (req, res) => {
   if (result.error)
     return res.status(400).send(result.error.details[0].message);
 
-  let user = await User.findOne({ email: req.body.email });
-  if (user) {
-    console.log("USER ", user);
-    return res.status(400).send("Account already exists");
+  try {
+    let user = await User.findOne({ email: req.body.email });
+    if (user) {
+      return res.status(400).send("Account already exists");
+    }
+  } catch (e) {
+    console.log("ERROR");
   }
 
   const salt = await bcrypt.genSalt(10);
@@ -95,7 +120,7 @@ router.post("/", auth, admin, async (req, res) => {
     );
   } catch (err) {
     console.log("ERR ", err);
-    return res.status(400).send("Account already exists");
+    return res.status(400).send("error:", err);
   }
   res.send("Account created successfully");
 });
@@ -124,5 +149,55 @@ router.delete("/", auth, admin, async (req, res) => {
     } else res.status(400).send("Account number does not exist");
   }
 });
+
+async function getCheckingAccountTrans(user) {
+  let pastTransactionsArray = [];
+  let futureTransactionsArray = [];
+
+  if (user.accounts.checkingAccount) {
+    for (tran of user.accounts.checkingAccount.pastTransactions) {
+      console.log("ID: ", tran);
+      pastTransactionsArray.push(await PastTransaction.findById(tran));
+    }
+  }
+
+  if (user.accounts.checkingAccount) {
+    for (tran of user.accounts.checkingAccount.futureTransactions) {
+      console.log("ID: ", tran);
+      futureTransactionsArray.push(await FutureTransaction.findById(tran));
+    }
+  }
+
+  const transactions = [
+    { pastTrans: pastTransactionsArray, futureTrans: futureTransactionsArray },
+  ];
+
+  return transactions;
+}
+
+async function getSavingAccountTrans(user) {
+  let pastTransactionsArray = [];
+  let futureTransactionsArray = [];
+
+  if (user.accounts.savingAccount) {
+    for (tran of user.accounts.savingAccount.pastTransactions) {
+      console.log("ID: ", tran);
+      pastTransactionsArray.push(await PastTransaction.findById(tran));
+    }
+  }
+
+  if (user.accounts.savingAccount) {
+    for (tran of user.accounts.savingAccount.futureTransactions) {
+      console.log("ID: ", tran);
+      futureTransactionsArray.push(await FutureTransaction.findById(tran));
+    }
+  }
+
+  const transactions = [
+    { pastTrans: pastTransactionsArray, futureTrans: futureTransactionsArray },
+  ];
+
+  return transactions;
+}
 
 module.exports = router;

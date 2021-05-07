@@ -12,6 +12,7 @@ const Input = (props) => {
         id={props.name}
         type={props.type}
         className="form-control form-element"
+        min={props.min ?? undefined}
       />
       {props.error && <div className="alert alert-danger">{props.error}</div>}
     </div>

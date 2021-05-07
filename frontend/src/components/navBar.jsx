@@ -14,7 +14,7 @@ const NavBar = () => {
       style={{ backgroundColor: "#6930c3" }}
     >
       <Link className="navbar-brand col-sm-3 col-md-2 mr-0" to="/">
-        Company name
+        Team<i>6</i>Bank
       </Link>
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav px-3 ml-auto">

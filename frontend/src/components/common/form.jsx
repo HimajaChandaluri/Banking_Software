@@ -3,6 +3,8 @@ import Joi from "joi-browser";
 import { isEmpty } from "lodash";
 import Input from "./Input";
 import Select from "./Select";
+import "../../App.css";
+import { format, add } from "date-fns";
 
 class Form extends Component {
   state = {
@@ -84,6 +86,25 @@ class Form extends Component {
     );
   };
 
+  renderDateInput = (name, label, type) => {
+    return (
+      <Input
+        name={name}
+        label={label}
+        value={this.state.data[name]}
+        onChange={this.handleChange}
+        error={this.state.errors[name]}
+        type={type}
+        min={format(
+          add(new Date(), {
+            days: 1,
+          }),
+          "yyyy-MM-dd"
+        )}
+      />
+    );
+  };
+
   renderSelect = (name, label, options) => {
     return (
       <Select
@@ -97,16 +118,20 @@ class Form extends Component {
     );
   };
 
-  renderRadioOptions = (name, label, type) => {
+  renderRadioOptions = (name, label, type, isDisabled, selected) => {
     return (
       <div className="form-check">
-        <label className="form-check-label">
+        <label
+          className={`form-check-label ${isDisabled ? "disabled-label" : ""}`}
+        >
           <input
             className="form-check-input"
             type={type}
             value={label}
             onChange={this.handleChange}
             name={name}
+            disabled={isDisabled}
+            checked={selected && label === selected}
           ></input>
           {label}
         </label>
@@ -118,7 +143,7 @@ class Form extends Component {
     return (
       <button
         disabled={!isEmpty(this.validate())}
-        className="btn btn-custom"
+        className="btn btn-custom "
         onClick={onClick}
       >
         {label}

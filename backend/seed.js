@@ -24,7 +24,7 @@ const admin = {
 
 async function seed() {
   try {
-    await mongoose.connect("mongodb://localhost/teamSixBank");
+    await mongoose.connect("mongodb+srv://sjsuteam6:U4vZQUPu29675Et@team6-bank-dev.dehoh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
 
     await User.deleteMany({});
 
