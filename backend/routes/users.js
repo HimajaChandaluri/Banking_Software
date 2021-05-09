@@ -153,11 +153,21 @@ router.delete("/", auth, admin, async (req, res) => {
 async function getCheckingAccountTrans(user) {
   let pastTransactionsArray = [];
   let futureTransactionsArray = [];
+  const date = new Date();
+  console.log("Before updating Date: ", date.getTime());
+  // date.setDate(date.getDate() - 20);
+  console.log("Before updating Date: ", date);
+  date.setFullYear(date.getFullYear() - 1);
+  date.setMonth(date.getMonth() - 6);
+  console.log("Updated Date: ", date.getTime());
 
   if (user.accounts.checkingAccount) {
     for (tran of user.accounts.checkingAccount.pastTransactions) {
       console.log("ID: ", tran);
-      pastTransactionsArray.push(await PastTransaction.findById(tran));
+      const trans = await PastTransaction.findById(tran);
+      if (trans.dateInitiatedOn > date) {
+        pastTransactionsArray.push(trans);
+      }
     }
   }
 
@@ -178,11 +188,18 @@ async function getCheckingAccountTrans(user) {
 async function getSavingAccountTrans(user) {
   let pastTransactionsArray = [];
   let futureTransactionsArray = [];
+  const date = new Date();
+  console.log("Before updating Date: ", date);
+  date.setFullYear(date.getFullYear() - 1);
+  date.setMonth(date.getMonth() - 6);
 
   if (user.accounts.savingAccount) {
     for (tran of user.accounts.savingAccount.pastTransactions) {
       console.log("ID: ", tran);
-      pastTransactionsArray.push(await PastTransaction.findById(tran));
+      const trans = await PastTransaction.findById(tran);
+      if (trans.dateInitiatedOn > date) {
+        pastTransactionsArray.push(trans);
+      }
     }
   }
 
