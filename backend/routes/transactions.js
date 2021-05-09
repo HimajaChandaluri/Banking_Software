@@ -130,6 +130,10 @@ router.post("/", auth, async (req, res) => {
           accountNumber: req.body.fromAccount,
           accountReference: senderAccountDetails._id,
         },
+        receiverAccount: {
+          accountType: "external",
+          accountNumber: req.body.toAccount,
+        },
         amount: req.body.amount,
       });
 
@@ -151,6 +155,10 @@ router.post("/", auth, async (req, res) => {
           accountType: senderAccountType,
           accountNumber: req.body.fromAccount,
           accountReference: senderAccountDetails._id,
+        },
+        receiverAccount: {
+          accountType: "external",
+          accountNumber: req.body.toAccount,
         },
         amount: req.body.amount,
         dateInitiatedOn: req.body.startOn,

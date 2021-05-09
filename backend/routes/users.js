@@ -165,7 +165,7 @@ async function getCheckingAccountTrans(user) {
     for (tran of user.accounts.checkingAccount.pastTransactions) {
       console.log("ID: ", tran);
       const trans = await PastTransaction.findById(tran);
-      if (trans.dateInitiatedOn > date) {
+      if (trans && trans.dateInitiatedOn > date) {
         pastTransactionsArray.push(trans);
       }
     }
@@ -197,7 +197,7 @@ async function getSavingAccountTrans(user) {
     for (tran of user.accounts.savingAccount.pastTransactions) {
       console.log("ID: ", tran);
       const trans = await PastTransaction.findById(tran);
-      if (trans.dateInitiatedOn > date) {
+      if (trans && trans.dateInitiatedOn > date) {
         pastTransactionsArray.push(trans);
       }
     }
