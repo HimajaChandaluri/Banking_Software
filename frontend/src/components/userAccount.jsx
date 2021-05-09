@@ -7,6 +7,8 @@ class UserAccount extends Component {
   constructor(props) {
 	super(props);
 	this.state = {
+		userFirstName: "Firstname",
+		userLastName: "Lastname",
 		userAccounts: []
 	}
   }
@@ -39,14 +41,45 @@ class UserAccount extends Component {
 		})
 	}
 
+	renderAllAccountInfo() {
+		return this.state.userAccounts.map((user, index) => {
+			const { Name, Type, Balance } = user;
+			let accountNameHidden = "XXXX" + (Name).toString().slice(4);
+			return (
+				<Link to={{pathname: "transactions", state: {account: Name}}}> 
+				<div style={{width: 'auto', padding: '10px', margin: '10px', borderRadius: '25px', background: '#EEEEEE', color: '#222222'}}>
+					<h2>{Type} Account</h2>
+					<h4>{accountNameHidden}</h4>
+					<h3 style={{color:'purple'}}>${Balance}</h3>
+				</div>
+				</Link>
+			)
+		})
+	}
+
+	renderUpcomingPayments() {
+		return (
+			<div className="row justify-content-center">
+				<h2 className="mt-4 mb-4">Upcoming Payments</h2>
+			</div>
+		)
+	}
+
 	state = {};
+
+	capitalizeFirstChar(text) {
+		return text.charAt(0).toUpperCase() + text.slice(1);
+	}
 
 	async componentDidMount() {
 		const user = auth.getCurrentUser();
 		const userAccounts = [...this.state.userAccounts];
 
+		var userFirstName = this.capitalizeFirstChar(user.firstName);
+		var userLastName = this.capitalizeFirstChar(user.lastName);
+
 		let userAccountDetails = await getUserDetails(user._id);
-		/* console.log("User accounts: ", userAccountDetails); */
+		//console.log("User accounts: ", userAccountDetails); 
 		if (userAccountDetails.data.checkingAccount) {
 			userAccounts.push({ Name: userAccountDetails.data.checkingAccount.accountNumber, Type: "Checking", Balance: userAccountDetails.data.checkingAccount.balance });
 		}
@@ -55,20 +88,28 @@ class UserAccount extends Component {
 		}
 		
 		/* Update state */
-		this.setState({ userAccounts });
+		this.setState({ userFirstName, userLastName, userAccounts });
 	}
 
 	render() {
+		const { pageSize, currentPage, searchQuery } = this.state;
+		//const { dataLength, data } = this.getTableData();
+		const userFirstName = this.state.userFirstName;
 		return (
 			<div className="container">
-				<h3>Accounts</h3>
+				<div className="row justify-content-left">
+					<h1 className="mt-4 mb-4">Hi {userFirstName}</h1>
+				</div>
+				<div className="row justify-content-left">
+					<h4 className="mt-4 mb-4">Welcome to your dashboard</h4>
+				</div>
 				<div>
-					<table id="users">
-						<tbody>
-						<tr>{this.renderTableHeader()}</tr>
-							{this.renderTableData()}
-						</tbody>
-					</table> 
+					<div style={{width: '50%', height: 'auto', float: 'left'}}>
+						{this.renderAllAccountInfo()}
+					</div>
+					<div style={{width: '45%', height: 'auto', float: 'right', padding: '10px', margin: '10px', borderRadius: '25px', background: '#EEEEEE'}}>
+						{this.renderUpcomingPayments()}
+					</div>
 				</div>
 			</div>
 		)
