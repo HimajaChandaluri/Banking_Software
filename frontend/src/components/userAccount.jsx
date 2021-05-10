@@ -53,10 +53,10 @@ class UserAccount extends Component {
 			let accountNameHidden = this.hideAccountNumber(Name);
 			return (
 				<Link to={{pathname: "transactions", state: {account: Name}}}> 
-				<div style={{width: 'auto', padding: '20px', margin: '10px', borderRadius: '25px', background: '#EEEEEE', color: '#222222'}}>
+				<div style={{width: 'auto', padding: '20px', margin: '10px', borderRadius: '25px', background: '#F9F9F9', color: '#222222', border:'1px solid '+this.colorScheme}}>
 					<h2>{Type} Account</h2>
 					<h4>{accountNameHidden}</h4>
-					<h3 style={{color:'purple'}}>${Balance}</h3>
+					<h3 style={{color:this.colorScheme}}>${Balance}</h3>
 				</div>
 				</Link>
 			)
@@ -80,14 +80,15 @@ class UserAccount extends Component {
 			const monthIndex = parseInt(monthStr, 10) - 1;
 			console.log("Rendering: $", amount, "to", receiver, "on", transferDate);
 			return (
-				<div className="row justify-content-center" style={{width: '75%', padding: '5px'}}>
-					<h5 className="mt-4 mb-4">${amount} to {receiver} on {monthNames[monthIndex]} {dayStr}, {yearStr}</h5>
+				<div className="row justify-content-center" style={{width: '75%'}}>
+					<p className="mt-4 mb-4" style={{fontSize: '1.5em'}}><span style={{color: this.colorScheme}}>${amount} </span> to {receiver} on {monthNames[monthIndex]} {dayStr}, {yearStr}</p>
 				</div>
 			)
 		})
 	}
 
 	state = {};
+	colorScheme = "indigo";
 
 	capitalizeFirstChar(text) {
 		return text.charAt(0).toUpperCase() + text.slice(1);
@@ -148,10 +149,15 @@ class UserAccount extends Component {
 					<div style={{width: '50%', height: 'auto', float: 'left'}}>
 						{this.renderAllAccountInfo()}
 					</div>
-					<div style={{width: '45%', height: 'auto', float: 'right', padding: '10px', margin: '10px', borderRadius: '25px', background: '#EEEEEE'}}>
+					<div style={{width: '45%', height: 'auto', float: 'right', padding: '10px', margin: '10px', borderRadius: '25px', background: '#F9F9F9', border: '1px solid '+this.colorScheme}}>
 						<div className="row justify-content-center">
-							<h2 className="mt-4 mb-4">Upcoming Payments</h2>
+							<h1 className="mt-4 mb-4">Upcoming Payments</h1>
 							{this.renderUpcomingPayments()}
+							<form action="transactions">
+							<button className="mt-4 mb-4" style={{borderRadius: '32px', border: '1px solid '+this.colorScheme, padding: '12px'}}>
+								<b style={{fontSize: '1.3em', color: this.colorScheme}}>View more payments</b>
+							</button>
+							</form>
 						</div>
 					</div>
 				</div>
