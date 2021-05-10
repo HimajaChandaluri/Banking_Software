@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import auth from "../services/authService";
 import { getUserDetails } from "../services/userService";
+import { getUserTransactions } from "../services/userService";
 
 class UserAccount extends Component {
   constructor(props) {
@@ -9,7 +10,8 @@ class UserAccount extends Component {
 	this.state = {
 		userFirstName: "Firstname",
 		userLastName: "Lastname",
-		userAccounts: []
+		userAccounts: [],
+		userUpcomingTransfers: []
 	}
   }
 
@@ -41,13 +43,17 @@ class UserAccount extends Component {
 		})
 	}
 
+	hideAccountNumber(number) {
+		return "XXXX" + (number).toString().slice(4);
+	}
+
 	renderAllAccountInfo() {
 		return this.state.userAccounts.map((user, index) => {
 			const { Name, Type, Balance } = user;
-			let accountNameHidden = "XXXX" + (Name).toString().slice(4);
+			let accountNameHidden = this.hideAccountNumber(Name);
 			return (
 				<Link to={{pathname: "transactions", state: {account: Name}}}> 
-				<div style={{width: 'auto', padding: '10px', margin: '10px', borderRadius: '25px', background: '#EEEEEE', color: '#222222'}}>
+				<div style={{width: 'auto', padding: '20px', margin: '10px', borderRadius: '25px', background: '#EEEEEE', color: '#222222'}}>
 					<h2>{Type} Account</h2>
 					<h4>{accountNameHidden}</h4>
 					<h3 style={{color:'purple'}}>${Balance}</h3>
@@ -58,11 +64,27 @@ class UserAccount extends Component {
 	}
 
 	renderUpcomingPayments() {
-		return (
-			<div className="row justify-content-center">
-				<h2 className="mt-4 mb-4">Upcoming Payments</h2>
-			</div>
-		)
+		/*
+		for(const [index, value] of this.state.userUpcomingTransfers.entries()) {
+			console.log("Rendering transfers:", value);
+		}
+		*/
+		return this.state.userUpcomingTransfers.map((transferDetails, index) => {
+			const amount = transferDetails.amount;
+			const receiver = this.hideAccountNumber(transferDetails.receiverAccount.accountNumber);
+			const transferDate = transferDetails.dateToBeInitiatedOn;
+			const yearStr = transferDate.substring(0, 4);
+			const monthStr = transferDate.substring(5, 7);
+			const dayStr = transferDate.substring(8, 10);
+			const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+			const monthIndex = parseInt(monthStr, 10) - 1;
+			console.log("Rendering: $", amount, "to", receiver, "on", transferDate);
+			return (
+				<div className="row justify-content-center" style={{width: '75%', padding: '5px'}}>
+					<h5 className="mt-4 mb-4">${amount} to {receiver} on {monthNames[monthIndex]} {dayStr}, {yearStr}</h5>
+				</div>
+			)
+		})
 	}
 
 	state = {};
@@ -86,9 +108,28 @@ class UserAccount extends Component {
 		if (userAccountDetails.data.savingAccount) {
 			userAccounts.push({ Name: userAccountDetails.data.savingAccount.accountNumber, Type: "Savings", Balance: userAccountDetails.data.savingAccount.balance });
 		}
+
+		const { data: transactions } = await getUserTransactions();
+		//console.log("Transactions:", transactions);
+
+		const userUpcomingTransfers = [...this.state.userUpcomingTransfers];
+		for (const [index, value] of transactions[0].checkingTrans[0].futureTrans.entries()) {
+			//console.log("Transaction:", value);
+			userUpcomingTransfers.push(value);
+		}
+		for (const [index, value] of transactions[0].savingTrans[0].futureTrans.entries()) {
+			//console.log("Transaction:", value);
+			// Ignore duplicate transfers (same transaction ID)
+			if (userUpcomingTransfers.findIndex(obj => obj._id === value._id) === -1) userUpcomingTransfers.push(value);
+		}
+		/*
+		for(const [index, value] of upcomingTransfers.entries()) {
+			console.log("Filtered transfers:", value);
+		}
+		*/
 		
 		/* Update state */
-		this.setState({ userFirstName, userLastName, userAccounts });
+		this.setState({ userFirstName, userLastName, userAccounts, userUpcomingTransfers }, () => {console.log("setState():", this.state.userUpcomingTransfers)});
 	}
 
 	render() {
@@ -108,7 +149,10 @@ class UserAccount extends Component {
 						{this.renderAllAccountInfo()}
 					</div>
 					<div style={{width: '45%', height: 'auto', float: 'right', padding: '10px', margin: '10px', borderRadius: '25px', background: '#EEEEEE'}}>
-						{this.renderUpcomingPayments()}
+						<div className="row justify-content-center">
+							<h2 className="mt-4 mb-4">Upcoming Payments</h2>
+							{this.renderUpcomingPayments()}
+						</div>
 					</div>
 				</div>
 			</div>
