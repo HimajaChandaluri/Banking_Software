@@ -41,11 +41,11 @@ const SideBar = () => {
                 label="Manual Transfer"
                 path="/manualTransfer"
               ></ListItemSideBar>
-              <ListItemSideBar
+              {/* <ListItemSideBar
                 iconClass="fa fa-cog"
                 label="Settings"
                 path="/adminSettings"
-              ></ListItemSideBar>
+              ></ListItemSideBar> */}
             </React.Fragment>
           )}
           {user && !user.isAdmin && (
@@ -65,11 +65,11 @@ const SideBar = () => {
                 label="Transfers"
                 path="/newTransfer"
               ></ListItemSideBar>
-              <ListItemSideBar
+              {/* <ListItemSideBar
                 iconClass="fa fa-cog"
                 label="Settings "
                 path="/userSettings"
-              ></ListItemSideBar>
+              ></ListItemSideBar> */}
             </React.Fragment>
           )}
           <ListItemSideBar

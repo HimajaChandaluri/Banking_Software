@@ -13,8 +13,8 @@ class UserTransactions extends Component {
   };
 
   async componentDidMount() {
-    await this.populateUserAccountNumbers();
     await this.populateUserTransactions();
+    await this.populateUserAccountNumbers();
   }
 
   async populateUserTransactions() {
@@ -60,6 +60,26 @@ class UserTransactions extends Component {
       );
     }
 
+    if (this.props.location.state) {
+      if (this.props.location.state.account === "CheckingAccount") {
+        this.setState({
+          selectedAccount:
+            "CheckingAccount(" +
+            userAccountDetails.checkingAccount.accountNumber +
+            ")",
+        });
+      } else if (this.props.location.state.account === "SavingAccount") {
+        this.setState({
+          selectedAccount:
+            "SavingAccount(" +
+            userAccountDetails.savingAccount.accountNumber +
+            ")",
+        });
+      }
+    } else {
+      this.setState({ selectedAccount: "All Accounts" });
+    }
+
     this.setState({ accountNumbers, userAccountDetails });
   }
 
@@ -79,6 +99,7 @@ class UserTransactions extends Component {
           label="Account"
           options={this.state.accountNumbers}
           onChange={this.handleChange}
+          selected={this.state.selectedAccount}
         />
 
         <PastTransactions

@@ -50,6 +50,7 @@ class PastTransactions extends Component {
       data = [...savingAccTrans];
       console.log("SavingAccount");
     } else if (checkingAccRegex.test(selected)) {
+      console.log("CHECKING ACCOUNT TRANS: ", checkingAccTrans);
       data = [...checkingAccTrans];
       console.log("CheckingAccount");
     }

@@ -5,42 +5,14 @@ import { getUserDetails } from "../services/userService";
 import { getUserTransactions } from "../services/userService";
 
 class UserAccount extends Component {
-  constructor(props) {
-	super(props);
-	this.state = {
-		userFirstName: "Firstname",
-		userLastName: "Lastname",
-		userAccounts: [],
-		userUpcomingTransfers: []
-	}
-  }
-
-	renderTableHeader(){
-		if(!this.state.userAccounts || this.state.userAccounts.length <= 0) return null;
-		let header = Object.keys(this.state.userAccounts[0])
-		return header.map((key, index) => {
-			return <th key={index}>{key.toUpperCase()}</th>
-		})
-	}
-
-	renderTableData() {
-		return this.state.userAccounts.map((user, index) => {
-			const { Name, Type, Balance } = user;
-			let accountNameHidden = "XXXX" + (Name).toString().slice(4);
-			// console.log("TEST::", accountNameHidden);
-			return (
-				<tr key={Name}>
-					<Link to={{
-						pathname: "transactions",
-						state: {
-							account: Name
-						}
-					}}>{accountNameHidden}</Link>
-					<td>{Type}</td>
-					<td>${Balance}</td>
-				</tr>
-			)
-		})
+	constructor(props) {
+		super(props);
+		this.state = {
+			userFirstName: "Firstname",
+			userLastName: "Lastname",
+			userAccounts: [],
+			userUpcomingTransfers: []
+		}
 	}
 
 	hideAccountNumber(number) {
@@ -52,7 +24,7 @@ class UserAccount extends Component {
 			const { Name, Type, Balance } = user;
 			let accountNameHidden = this.hideAccountNumber(Name);
 			return (
-				<Link to={{pathname: "transactions", state: {account: Name}}}> 
+				<Link to={{pathname: "transactions", state: {account: (Type==="Checking") ? "CheckingAccount" : "SavingAccount" }}}> 
 				<div style={{width: 'auto', padding: '20px', margin: '10px', borderRadius: '25px', background: '#F9F9F9', color: '#222222', border:'1px solid '+this.colorScheme}}>
 					<h2>{Type} Account</h2>
 					<h4>{accountNameHidden}</h4>

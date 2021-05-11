@@ -11,7 +11,11 @@ const SelectWithoutBlankOption = (props) => {
         onChange={props.onChange}
       >
         {props.options.map((option) => (
-          <option key={option} value={option}>
+          <option
+            key={option}
+            value={option}
+            selected={option == props.selected ? true : false}
+          >
             {option}
           </option>
         ))}
