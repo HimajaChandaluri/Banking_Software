@@ -11,12 +11,7 @@ const {
   getCheckingsAccountNumber,
   setAccountNumber,
 } = require("../models/accountNumbers");
-const {
-  User,
-  validate,
-  // getAccountNumbers,
-  // setAccountNumbers,
-} = require("../models/user");
+const { User, validate } = require("../models/user");
 const { PastTransaction } = require("../models/pastTransactions");
 const { FutureTransaction } = require("../models/futureTransactions");
 
@@ -40,35 +35,17 @@ router.get("/:id", auth, async (req, res) => {
   res.send(user.accounts);
 });
 
-async function createAccountNumber() {
-  const accountNumbers = new mongoose.Schema({
-    accountNumber: "10000070",
-    savingsAccountNumber: "20000070",
-    checkingAccountNumber: "30000070",
-  });
-
-  const result = await accountNumbers.save();
-  console.log(result);
-}
-
 router.post("/", auth, admin, async (req, res) => {
-  //createAccountNumber();
   let accountNumber = (await getAccountNumber()) + 1;
   let savingsAccountNumber = await getSavingsAccountNumber();
   let checkingsAccountNumber = await getCheckingsAccountNumber();
 
-  // const data = getAccountNumbers();
-  // const accountNumber = data.accountNumber + 1;
   savingsAccountNumber = req.body.savingsAccount
     ? savingsAccountNumber + 1
     : savingsAccountNumber;
   checkingsAccountNumber = req.body.checkingAccount
     ? checkingsAccountNumber + 1
     : checkingsAccountNumber;
-
-  console.log("accountNumber", accountNumber);
-  console.log("savingsAccountNumber", savingsAccountNumber);
-  console.log("checkingsAccountNumber", checkingsAccountNumber);
 
   const result = validate(req.body);
   if (result.error)
