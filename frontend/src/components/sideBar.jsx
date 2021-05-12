@@ -32,7 +32,7 @@ const SideBar = () => {
                 path="/createAccount"
               ></ListItemSideBar>
               <ListItemSideBar
-                iconClass="fa fa-credit-card"
+                iconClass="fa fa-window-close"
                 label="Close Account"
                 path="/closeAccount"
               ></ListItemSideBar>
