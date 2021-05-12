@@ -36,8 +36,17 @@ async function getCheckingsAccountNumber() {
   return result.accountNumber;
 }
 
+async function setAccountNumber(accountType, accountNumber) {
+  const result = await AccountNumbers.findOne({
+    accountType: accountType,
+  });
+  result.accountNumber = accountNumber;
+  await result.save();
+}
+
 module.exports.accountNumbersSchema = accountNumbersSchema;
 module.exports.AccountNumbers = AccountNumbers;
 module.exports.getAccountNumber = getAccountNumber;
 module.exports.getSavingsAccountNumber = getSavingsAccountNumber;
 module.exports.getCheckingsAccountNumber = getCheckingsAccountNumber;
+module.exports.setAccountNumber = setAccountNumber;
