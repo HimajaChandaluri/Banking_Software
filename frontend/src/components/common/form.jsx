@@ -4,7 +4,7 @@ import { isEmpty } from "lodash";
 import Input from "./Input";
 import Select from "./Select";
 import "../../App.css";
-import { format, add } from "date-fns";
+import { format, add, subYears } from "date-fns";
 
 class Form extends Component {
   state = {
@@ -101,6 +101,20 @@ class Form extends Component {
           }),
           "yyyy-MM-dd"
         )}
+      />
+    );
+  };
+
+  renderDateOfBirthInput = (name, label, type) => {
+    return (
+      <Input
+        name={name}
+        label={label}
+        value={this.state.data[name]}
+        onChange={this.handleChange}
+        error={this.state.errors[name]}
+        type={type}
+        max={format(subYears(new Date(), 18), "yyyy-MM-dd")}
       />
     );
   };
