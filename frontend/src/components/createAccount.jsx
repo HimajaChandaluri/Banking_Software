@@ -117,7 +117,11 @@ class CreateAccount extends Form {
             <div className="col">
               {this.renderInput("firstName", "First Name", "text")}
               {this.renderInput("email", "Email", "text")}
-              {this.renderInput("dateOfBirth", "Date Of Birth", "date")}
+              {this.renderDateOfBirthInput(
+                "dateOfBirth",
+                "Date Of Birth",
+                "date"
+              )}
             </div>
             <div className="col">
               {this.renderInput("lastName", "Last Name", "text")}

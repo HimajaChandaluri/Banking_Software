@@ -176,33 +176,6 @@ function validateUserInput(user) {
   return schema.validate(user);
 }
 
-function getAccountNumbers() {
-  const fileData = fs.readFileSync(__dirname + "/AccountNumber.json", "utf8");
-  const accNumData = JSON.parse(fileData);
-  return accNumData;
-}
-
-function setAccountNumbers(
-  accountNumber,
-  savingsAccountNumber,
-  checkingsAccountNumber
-) {
-  const customerAccountDetails = {
-    accountNumber: accountNumber,
-    savingsAccountNumber: savingsAccountNumber,
-    checkingsAccountNumber: checkingsAccountNumber,
-  };
-
-  const jsonString = JSON.stringify(customerAccountDetails);
-  try {
-    fs.writeFileSync(__dirname + "/AccountNumber.json", jsonString);
-  } catch (err) {
-    console.log("Error writing file", err);
-  }
-}
-
 module.exports.userSchema = userSchema;
 module.exports.validate = validateUserInput;
 module.exports.User = User;
-module.exports.getAccountNumbers = getAccountNumbers;
-module.exports.setAccountNumbers = setAccountNumbers;

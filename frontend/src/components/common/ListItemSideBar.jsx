@@ -12,7 +12,7 @@ class ListItemSideBar extends Component {
       <li className={this.renderClasses(label, active)}>
         <i
           className={iconClass}
-          style={{ float: "left" }}
+          style={{ float: "left", marginTop: "5px" }}
           aria-hidden="true"
         ></i>
         <NavLink
@@ -23,6 +23,7 @@ class ListItemSideBar extends Component {
             textAlign: "left",
             fontFamily: "sans-serif",
             letterSpacing: "1px",
+            fontSize: "22px",
           }}
           to={path}
         >

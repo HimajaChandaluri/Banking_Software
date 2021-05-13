@@ -6,11 +6,12 @@ const bcrypt = require("bcrypt");
 const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
 const {
-  User,
-  validate,
-  getAccountNumbers,
-  setAccountNumbers,
-} = require("../models/user");
+  getAccountNumber,
+  getSavingsAccountNumber,
+  getCheckingsAccountNumber,
+  setAccountNumber,
+} = require("../models/accountNumbers");
+const { User, validate } = require("../models/user");
 const { PastTransaction } = require("../models/pastTransactions");
 const { FutureTransaction } = require("../models/futureTransactions");
 
@@ -35,14 +36,16 @@ router.get("/:id", auth, async (req, res) => {
 });
 
 router.post("/", auth, admin, async (req, res) => {
-  const data = getAccountNumbers();
-  const accountNumber = data.accountNumber + 1;
-  const savingsAccountNumber = req.body.savingsAccount
-    ? data.savingsAccountNumber + 1
-    : data.savingsAccountNumber;
-  const checkingsAccountNumber = req.body.checkingAccount
-    ? data.checkingsAccountNumber + 1
-    : data.checkingsAccountNumber;
+  let accountNumber = (await getAccountNumber()) + 1;
+  let savingsAccountNumber = await getSavingsAccountNumber();
+  let checkingsAccountNumber = await getCheckingsAccountNumber();
+
+  savingsAccountNumber = req.body.savingsAccount
+    ? savingsAccountNumber + 1
+    : savingsAccountNumber;
+  checkingsAccountNumber = req.body.checkingAccount
+    ? checkingsAccountNumber + 1
+    : checkingsAccountNumber;
 
   const result = validate(req.body);
   if (result.error)
@@ -113,11 +116,9 @@ router.post("/", auth, admin, async (req, res) => {
   else user = new User({ ...basicDetails, ...hasSavingAccount });
   try {
     await user.save();
-    setAccountNumbers(
-      accountNumber,
-      savingsAccountNumber,
-      checkingsAccountNumber
-    );
+    setAccountNumber("userAccount", accountNumber);
+    setAccountNumber("savingsAccount", savingsAccountNumber);
+    setAccountNumber("checkingsAccount", checkingsAccountNumber);
   } catch (err) {
     console.log("ERR ", err);
     return res.status(400).send("error:", err);
