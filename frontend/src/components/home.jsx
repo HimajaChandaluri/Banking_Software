@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import auth from "../services/authService";
 import { Redirect } from "react-router-dom";
-
+import background from "../images/bank.png";
 class Home extends Component {
   state = {};
   render() {
@@ -9,7 +9,18 @@ class Home extends Component {
     console.log("Got user data again in HOME: ", user);
 
     if (!user) {
-      return <h1>Home - unprotected</h1>;
+      return (
+        <div>
+          <img
+            src={background}
+            alt="LOGO"
+            style={{
+              width: "100%",
+              maxHeight: "700px",
+            }}
+          ></img>
+        </div>
+      );
     } else {
       if (user && user.isAdmin) {
         return (

@@ -30,7 +30,7 @@ class App extends Component {
         <div className="container-fluid">
           <div className="row">
             <SideBar></SideBar>
-            <main role="main" className="col-md-8 ml-sm-auto col-lg-10 px-4">
+            <main role="main" className="col-md-8 ml-sm-auto col-lg-10">
               <Switch>
                 <Route path="/home" component={Home}></Route>
                 <UserRoute path="/accounts" component={UserAccount}></UserRoute>
