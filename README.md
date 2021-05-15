@@ -40,16 +40,17 @@
 
 ## Deployment Diagram
 
-## Initially Created Wireframes
+![image](https://user-images.githubusercontent.com/78995589/118349854-229ccf80-b508-11eb-9656-6a4128c39c92.png)
 
-Login Page
-![](UX-mocks/Login-page.png)
-Dashboard
-![](UX-mocks/Accounts-page.png)
-Transfers Page(s)
-Home             |  Start Transfer
+## UI Mocks Vs. Final design 
+
+**Mocks**            |  **Final**
 :-------------------------:|:-------------------------:
-![](UX-mocks/Transfers-homepage.png)  |  ![](UX-mocks/Transfers-page.png)
+![](UX-mocks/Login-page.png) | ![image](https://user-images.githubusercontent.com/78995589/118349963-e3bb4980-b508-11eb-9ef3-fbe6aa242c18.png)
+![](UX-mocks/Accounts-page.png) | ![image](https://user-images.githubusercontent.com/78995589/118349994-29781200-b509-11eb-9991-5d47e9101e4c.png)
+![](UX-mocks/Transfers-page.png)  |  ![image](https://user-images.githubusercontent.com/78995589/118350014-4ad8fe00-b509-11eb-9b3b-46bb2e6458ea.png)
+![](UX-mocks/Transactions-page.png) | ![image](https://user-images.githubusercontent.com/78995589/118350040-66dc9f80-b509-11eb-8142-33a761afa111.png)
+![](UX-mocks/CreateAccount_adminpage.png) | ![image](https://user-images.githubusercontent.com/78995589/118350067-94294d80-b509-11eb-88c5-c3c7d606e321.png)
 
 ## XP Value
 
@@ -76,3 +77,5 @@ Throughout the project all the teammates respected others opinions, suggestions,
 ### Sprint 4 (**May 9** to **May 14**)
 
 ![image](https://user-images.githubusercontent.com/78995589/118202079-f866e700-b40d-11eb-8d05-64b5b916ff6a.png)
+
+
