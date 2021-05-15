@@ -38,6 +38,8 @@
 
 ## Architecture Diagram
 
+![202-Team6Bank-ArchitectureDiagram](https://user-images.githubusercontent.com/78743953/118373768-50682f80-b56d-11eb-9bd8-6fd2ac867e28.jpeg)
+
 ## Deployment Diagram
 
 ![image](https://user-images.githubusercontent.com/78995589/118349854-229ccf80-b508-11eb-9656-6a4128c39c92.png)
