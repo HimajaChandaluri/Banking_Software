@@ -38,7 +38,7 @@
 
 ## Architecture Diagram
 
-![image](https://user-images.githubusercontent.com/78995589/118375826-2583d880-b579-11eb-921f-94107c60d53a.png)
+![image](https://user-images.githubusercontent.com/78995589/118376827-3fc0b500-b57f-11eb-9976-aec4478d2287.png)
 
 ## Deployment Diagram
 
