@@ -10,7 +10,7 @@
 ## Tech Stack
 
 > MERN Stack
-- **Frontend** : React
+- **Frontend** : React.js
 - **Backend** : Node.js
 - **API Management** : Express
 - **Database** : MongoDB
@@ -56,13 +56,17 @@
 
 ## XP Value
 
-### **Respect**
-
-Throughout the project all the teammates respected others opinions, suggestions, their availability, and timelines.
-
 ### **Communication**
 
 As a team we have always communicated to transfer knowledge from one team member to everyone else on the team.
+
+### **Simplicity**
+
+We implemented only the required features, and did it using multiple reusable components. 
+
+### **Respect**
+
+Throughout the project all the teammates respected others opinions, suggestions, their availability, and timelines.
 
 ## Sprints
 
