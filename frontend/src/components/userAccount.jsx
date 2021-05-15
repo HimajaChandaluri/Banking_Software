@@ -8,6 +8,7 @@ class UserAccount extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			userAccountNumber: "",
 			userFirstName: "Firstname",
 			userLastName: "Lastname",
 			userAccounts: [],
@@ -41,7 +42,8 @@ class UserAccount extends Component {
 			console.log("Rendering transfers:", value);
 		}
 		*/
-		return this.state.userUpcomingTransfers.map((transferDetails, index) => {
+		const numTransactionsToDisplay = 3;
+		return this.state.userUpcomingTransfers.slice(0, numTransactionsToDisplay).map((transferDetails, index) => {
 			const amount = transferDetails.amount;
 			const receiver = this.hideAccountNumber(transferDetails.receiverAccount.accountNumber);
 			const transferDate = transferDetails.dateToBeInitiatedOn;
@@ -72,9 +74,11 @@ class UserAccount extends Component {
 
 		var userFirstName = this.capitalizeFirstChar(user.firstName);
 		var userLastName = this.capitalizeFirstChar(user.lastName);
+		var userAccountNumber = (user.accoutNumber).toString();
 
 		let userAccountDetails = await getUserDetails(user._id);
-		//console.log("User accounts: ", userAccountDetails); 
+		console.log("User accounts: ", userAccountDetails); 
+		console.log("User info:", user);
 		if (userAccountDetails.data.checkingAccount) {
 			userAccounts.push({ Name: userAccountDetails.data.checkingAccount.accountNumber, Type: "Checking", Balance: userAccountDetails.data.checkingAccount.balance });
 		}
@@ -102,17 +106,18 @@ class UserAccount extends Component {
 		*/
 		
 		/* Update state */
-		this.setState({ userFirstName, userLastName, userAccounts, userUpcomingTransfers }, () => {console.log("setState():", this.state.userUpcomingTransfers)});
+		this.setState({ userAccountNumber, userFirstName, userLastName, userAccounts, userUpcomingTransfers }, () => {console.log("setState():", this.state.userUpcomingTransfers)});
 	}
 
 	render() {
 		const { pageSize, currentPage, searchQuery } = this.state;
 		//const { dataLength, data } = this.getTableData();
 		const userFirstName = this.state.userFirstName;
+		const userAccountNum = this.state.userAccountNumber;
 		return (
 			<div className="container">
 				<div className="row justify-content-left">
-					<h1 className="mt-4 mb-4">Hi {userFirstName}</h1>
+					<h1 className="mt-4 mb-4">Hi {userFirstName} (Account# {userAccountNum})</h1>
 				</div>
 				<div className="row justify-content-left">
 					<h4 className="mt-4 mb-4">Welcome to your dashboard</h4>
