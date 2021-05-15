@@ -42,7 +42,14 @@
 
 ## Initially Created Wireframes
 
-In folder ``` UX-mocks```
+Login Page
+![](UX-mocks/Login-page.png)
+Dashboard
+![](UX-mocks/Accounts-page.png)
+Transfers Page(s)
+Home             |  Start Transfer
+:-------------------------:|:-------------------------:
+![](UX-mocks/Transfers-homepage.png)  |  ![](UX-mocks/Transfers-page.png)
 
 ## XP Value
 
