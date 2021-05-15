@@ -72,11 +72,11 @@ const SideBar = () => {
               ></ListItemSideBar> */}
             </React.Fragment>
           )}
-          <ListItemSideBar
+          {/* <ListItemSideBar
             iconClass="fa fa-mobile"
             label="Contact Us"
             path="/home"
-          ></ListItemSideBar>
+          ></ListItemSideBar> */}
         </ul>
       </div>
     </nav>
