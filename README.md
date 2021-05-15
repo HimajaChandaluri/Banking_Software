@@ -60,6 +60,10 @@
 
 Throughout the project all the teammates respected others opinions, suggestions, their availability, and timelines.
 
+### **Communication**
+
+As a team we have always communicated to transfer knowledge from one team member to everyone else on the team.
+
 ## Sprints
 
 > Detailed Sprint task distribution in ```DeliverableDocuments/SprintCharts.xlsx```
