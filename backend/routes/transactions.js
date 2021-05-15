@@ -99,7 +99,7 @@ router.post("/", auth, async (req, res) => {
           accountReference: receiverAccountDetails._id,
         },
         amount: req.body.amount,
-        dateInitiatedOn: req.body.startOn,
+        dateToBeInitiatedOn: req.body.startOn,
         typeOfPayment: req.body.frequency,
       });
 
@@ -161,7 +161,7 @@ router.post("/", auth, async (req, res) => {
           accountNumber: req.body.toAccount,
         },
         amount: req.body.amount,
-        dateInitiatedOn: req.body.startOn,
+        dateToBeInitiatedOn: req.body.startOn,
         typeOfPayment: req.body.frequency,
       });
 
