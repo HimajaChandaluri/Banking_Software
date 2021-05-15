@@ -1,4 +1,4 @@
-# Banking Software Project (Team 6)
+# Team6Bank
 
 ## Team Members
 
