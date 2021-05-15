@@ -38,7 +38,7 @@
 
 ## Architecture Diagram
 
-![202-Team6Bank-ArchitectureDiagram](https://user-images.githubusercontent.com/78743953/118373768-50682f80-b56d-11eb-9bd8-6fd2ac867e28.jpeg)
+![202-Team6Bank-ArchitectureDiagram] ![WhatsApp Image 2021-05-15 at 11 37 39 PM](https://user-images.githubusercontent.com/78071272/118374295-28c69680-b570-11eb-9391-6fd2979322c0.jpeg)
 
 ## Deployment Diagram
 
