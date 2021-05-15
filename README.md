@@ -38,7 +38,7 @@
 
 ## Architecture Diagram
 
-![202-Team6Bank-ArchitectureDiagram] ![WhatsApp Image 2021-05-15 at 11 37 39 PM](https://user-images.githubusercontent.com/78071272/118374295-28c69680-b570-11eb-9391-6fd2979322c0.jpeg)
+![WhatsApp Image 2021-05-15 at 11 37 39 PM](https://user-images.githubusercontent.com/78071272/118374295-28c69680-b570-11eb-9391-6fd2979322c0.jpeg)
 
 ## Deployment Diagram
 
@@ -70,7 +70,7 @@ Throughout the project all the teammates respected others opinions, suggestions,
 
 ### Sprint 2 (**April 11** to **April 24**)
 
-![image](https://user-images.githubusercontent.com/78995589/118200851-f6e7ef80-b40a-11eb-9f9e-9556b4a75e4e.png)
+![image](https://user-images.githubusercontent.com/78995589/118374507-52cc8880-b571-11eb-8c3b-d4d7c313e27b.png)
 
 ### Sprint 3 (**April 25** to **May 8**)
 
