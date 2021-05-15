@@ -33,7 +33,7 @@
 - Create account for users with corresponding Saving and/or Checking accounts
 - Delete a users Saving or Checking or whole Account based on user's request
 - Can deposit money into customers account, on their behalf
-- Can transfer betwwen accounts in the bank, based on user request
+- Can transfer between accounts in the bank, based on user request
 - Can transfer money to accounts in anoter bank based on user request
 
 ## Architecture Diagram
