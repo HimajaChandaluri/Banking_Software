@@ -38,7 +38,7 @@
 
 ## Architecture Diagram
 
-![WhatsApp Image 2021-05-15 at 11 37 39 PM](https://user-images.githubusercontent.com/78071272/118374295-28c69680-b570-11eb-9391-6fd2979322c0.jpeg)
+<img width="1435" alt="arch_diagram" src="https://user-images.githubusercontent.com/78071272/118375055-151d2f00-b574-11eb-9f95-355cf71f73a8.png">
 
 ## Deployment Diagram
 
