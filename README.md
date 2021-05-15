@@ -17,7 +17,7 @@
 
 ## Banking System features
 
-> Two roles **ADMIN** and **USER**
+> Two roles **USER** and **ADMIN**
 
 ### User
 
@@ -38,7 +38,7 @@
 
 ## Architecture Diagram
 
-<img width="1435" alt="arch_diagram" src="https://user-images.githubusercontent.com/78071272/118375055-151d2f00-b574-11eb-9f95-355cf71f73a8.png">
+![image](https://user-images.githubusercontent.com/78995589/118375826-2583d880-b579-11eb-921f-94107c60d53a.png)
 
 ## Deployment Diagram
 
