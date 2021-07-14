@@ -16,7 +16,7 @@ if (!config.get("jwtPrivateKey")) {
 const mongoose = require("mongoose");
 
 mongoose
-  .connect("mongodb+srv://sjsuteam6:U4vZQUPu29675Et@team6-bank-dev.dehoh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
+  .connect("mongodb+srv://url", {
     // retry to connect for 60 times
     reconnectTries: 1,
     // wait 1 second before retrying
